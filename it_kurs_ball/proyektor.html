@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏆 IT PARK — Jonli Dars & Proyektor Reytingi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&family=JetBrains+Mono:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Google Firebase Realtime Database SDK (Markaziy bulutli baza) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="cloud-db.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+      background: linear-gradient(135deg, #f0f4f9 0%, #e2e8f0 100%);
+      color: #0f172a;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 40px;
+    }
+
+    /* Yuqori Proyektor Header */
+    .tv-header {
+      padding: 14px 28px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-wrap { display: flex; align-items: center; gap: 14px; }
+    .brand-logo {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, #0284c7, #22c55e);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; color: #fff;
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+    }
+    .brand-title {
+      font-size: 1.55rem; font-weight: 900; letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #1e293b, #0284c7);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .brand-subtitle { font-size: 0.8rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+    .tv-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .live-indicator {
+      display: flex; align-items: center; gap: 6px;
+      background: #fef2f2; border: 1px solid #fecaca;
+      padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; color: #ef4444;
+    }
+    .live-dot { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: livePulse 1s infinite; }
+    @keyframes livePulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.85); } }
+
+    .group-filter-btn {
+      background: #f8fafc; border: 2px solid #e2e8f0; color: #475569;
+      font-family: inherit; font-size: 0.85rem; font-weight: 800;
+      padding: 8px 16px; border-radius: 22px; cursor: pointer; transition: all 0.2s;
+    }
+    .group-filter-btn.active {
+      background: linear-gradient(135deg, #0284c7, #22c55e);
+      border-color: transparent; color: #fff;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+    }
+    .group-filter-btn:hover { transform: translateY(-1px); }
+
+    .btn-action-top {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #fff; border: none; padding: 8px 16px; border-radius: 22px;
+      font-weight: 800; font-size: 0.85rem; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+    }
+
+    /* PODIUM (TOP 3) SECTION */
+    .podium-section {
+      padding: 24px 28px 16px;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .podium-title {
+      font-size: 1.45rem; font-weight: 900; margin-bottom: 18px;
+      background: linear-gradient(90deg, #d97706, #0284c7, #10b981);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -0.3px;
+    }
+    .podium-box {
+      display: flex; justify-content: center; align-items: flex-end; gap: 18px;
+      margin: 0 auto;
+    }
+    .podium-column {
+      display: flex; flex-direction: column; align-items: center;
+      flex: 1; max-width: 220px;
+    }
+    .podium-crown { font-size: 2.2rem; margin-bottom: 2px; }
+    .podium-avatar {
+      width: 80px; height: 80px; border-radius: 50%; border: 3px solid #e2e8f0;
+      background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      object-fit: cover;
+    }
+    .podium-avatar.first {
+      width: 102px; height: 102px; border: 4px solid #f59e0b;
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.45);
+    }
+    .podium-name { font-size: 1rem; font-weight: 900; margin-top: 8px; color: #0f172a; }
+    .podium-group { font-size: 0.72rem; color: #64748b; font-weight: 700; margin-bottom: 4px; }
+    .podium-xp {
+      font-size: 0.95rem; font-weight: 900; color: #0284c7;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .podium-block {
+      width: 100%; border-radius: 16px 16px 0 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; font-weight: 900; color: #fff; margin-top: 10px;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.08);
+    }
+    .podium-block.p1 { height: 95px; background: linear-gradient(135deg, #f59e0b, #d97706); font-size: 2.3rem; }
+    .podium-block.p2 { height: 72px; background: linear-gradient(135deg, #94a3b8, #64748b); }
+    .podium-block.p3 { height: 55px; background: linear-gradient(135deg, #d97706, #92400e); }
+
+    /* STUDENTS LIST SECTION */
+    .students-container {
+      max-width: 1100px;
+      margin: 10px auto 0;
+      padding: 0 24px;
+    }
+    .section-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 14px; padding: 0 4px;
+    }
+    .section-title-text { font-size: 1.2rem; font-weight: 900; color: #0f172a; }
+    .section-count {
+      background: #eff6ff; color: #0284c7; border: 1px solid #bfdbfe;
+      padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 800;
+    }
+
+    .students-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+      gap: 10px;
+    }
+
+    .student-row {
+      background: #fff; border: 1.5px solid #e2e8f0; border-radius: 16px;
+      padding: 10px 16px; display: flex;
+      align-items: center; justify-content: space-between;
+      transition: all 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .student-row:hover { border-color: #0284c7; box-shadow: 0 6px 18px rgba(2, 132, 199, 0.1); }
+    .student-row.top1 { border-color: #f59e0b; background: linear-gradient(90deg, #fffbeb 0%, #ffffff 40%); }
+    .student-row.top2 { border-color: #cbd5e1; background: linear-gradient(90deg, #f8fafc 0%, #ffffff 40%); }
+    .student-row.top3 { border-color: #fdba74; background: linear-gradient(90deg, #fff7ed 0%, #ffffff 40%); }
+
+    .student-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .student-rank {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: #f1f5f9; display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 900; color: #64748b; flex-shrink: 0;
+    }
+    .student-rank.r1 { background: #fef3c7; color: #92400e; font-size: 1rem; }
+    .student-rank.r2 { background: #f1f5f9; color: #475569; font-size: 1rem; }
+    .student-rank.r3 { background: #fff7ed; color: #9a3412; font-size: 1rem; }
+
+    .student-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 2px solid #e2e8f0; flex-shrink: 0;
+    }
+    .student-meta { min-width: 0; overflow: hidden; }
+    .student-name {
+      font-weight: 800; font-size: 0.95rem; color: #0f172a;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .student-group { font-size: 0.72rem; color: #64748b; font-weight: 600; }
+
+    /* Ball qo'shish / ayirish boshqaruvi */
+    .student-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .student-xp {
+      font-weight: 900; font-size: 1.05rem; color: #0284c7;
+      font-family: 'JetBrains Mono', monospace; min-width: 75px; text-align: right;
+    }
+    .score-btns { display: flex; gap: 5px; }
+    .score-btn {
+      height: 34px; padding: 0 10px; border: 2px solid; border-radius: 10px;
+      font-weight: 900; font-size: 0.78rem; cursor: pointer; font-family: inherit;
+      transition: all 0.15s; display: inline-flex; align-items: center; justify-content: center;
+    }
+    .score-btn:hover { transform: scale(1.08); }
+    .score-btn:active { transform: scale(0.95); }
+    .score-btn.plus10 { background: #ecfdf5; border-color: #10b981; color: #047857; }
+    .score-btn.plus5 { background: #eff6ff; border-color: #0284c7; color: #0369a1; }
+    .score-btn.minus5 { background: #fef2f2; border-color: #ef4444; color: #b91c1c; }
+
+    @media (max-width: 768px) {
+      .students-grid { grid-template-columns: 1fr; }
+      .podium-box { gap: 10px; }
+      .podium-avatar { width: 62px; height: 62px; }
+      .podium-avatar.first { width: 80px; height: 80px; }
+      .score-btn { height: 30px; padding: 0 6px; font-size: 0.72rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Proyektor Boshqaruv Qatori -->
+  <header class="tv-header">
+    <div class="brand-wrap">
+      <div class="brand-logo">🏢</div>
+      <div>
+        <h1 class="brand-title">IT PARK</h1>
+        <p class="brand-subtitle">O'quv Markazi — Jonli Dars & Proyektor Doskasi</p>
+      </div>
+    </div>
+    <div class="tv-controls">
+      <div class="live-indicator">
+        <span class="live-dot"></span>
+        <span>JONLI EFIR</span>
+      </div>
+
+      <!-- Guruhlar tugmachalari -->
+      <div id="groupButtonsBar" style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <button class="group-filter-btn active" data-grp="ALL" onclick="setGroup('ALL')">Barchasi 🌐</button>
+      </div>
+
+      <button class="btn-action-top" onclick="toggleFullScreen()">⛶ To'liq Ekran</button>
+      <a href="oquvchi.html" target="_blank" class="btn-action-top" style="background: linear-gradient(135deg, #10b981, #059669);">
+        📱 O'quvchi Portali
+      </a>
+    </div>
+  </header>
+
+  <!-- 1. KORG'AZMALI TOP 3 PODIUM -->
+  <section class="podium-section" id="podiumSection">
+    <h2 class="podium-title">👑 TOP 3 ENG KUCHLI O'QUVCHILAR 👑</h2>
+    <div class="podium-box">
+      <!-- 2-O'RIN -->
+      <div class="podium-column">
+        <div class="podium-crown">🥈</div>
+        <img class="podium-avatar" id="p2Avatar" src="" alt="2-o'rin">
+        <div class="podium-name" id="p2Name">—</div>
+        <div class="podium-group" id="p2Group">—</div>
+        <div class="podium-xp" id="p2Xp">0 XP</div>
+        <div class="podium-block p2">2</div>
+      </div>
+      <!-- 1-O'RIN -->
+      <div class="podium-column">
+        <div class="podium-crown">👑</div>
+        <img class="podium-avatar first" id="p1Avatar" src="" alt="1-o'rin">
+        <div class="podium-name" id="p1Name" style="font-size: 1.2rem;">—</div>
+        <div class="podium-group" id="p1Group">—</div>
+        <div class="podium-xp" id="p1Xp" style="font-size: 1.15rem; color:#d97706;">0 XP</div>
+        <div class="podium-block p1">1</div>
+      </div>
+      <!-- 3-O'RIN -->
+      <div class="podium-column">
+        <div class="podium-crown">🥉</div>
+        <img class="podium-avatar" id="p3Avatar" src="" alt="3-o'rin">
+        <div class="podium-name" id="p3Name">—</div>
+        <div class="podium-group" id="p3Group">—</div>
+        <div class="podium-xp" id="p3Xp">0 XP</div>
+        <div class="podium-block p3">3</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. QOLGAN VA BARCHA O'QUVCHILAR RO'YXATI (+/- BALLAR BILAN) -->
+  <section class="students-container">
+    <div class="section-bar">
+      <div class="section-title-text" id="listTitle">📋 Barcha O'quvchilar Reytingi</div>
+      <span class="section-count" id="listCount">Jami: 0 o'quvchi</span>
+    </div>
+    <div class="students-grid" id="studentsGrid"></div>
+  </section>
+
+  <script>
+    const STORAGE_KEY = 'IT_PARK_OFFICIAL_STUDENTS_V2';
+    let currentGroup = 'ALL';
+    let lastTopXp = 0;
+
+    const MONOGRAM_PALETTES = [
+      { bg1: '#6366f1', bg2: '#4f46e5' },
+      { bg1: '#ec4899', bg2: '#db2777' },
+      { bg1: '#06b6d4', bg2: '#0891b2' },
+      { bg1: '#10b981', bg2: '#059669' },
+      { bg1: '#f59e0b', bg2: '#d97706' },
+      { bg1: '#8b5cf6', bg2: '#7c3aed' },
+      { bg1: '#3b82f6', bg2: '#2563eb' },
+      { bg1: '#14b8a6', bg2: '#0d9488' },
+      { bg1: '#f43f5e', bg2: '#e11d48' },
+      { bg1: '#64748b', bg2: '#475569' }
+    ];
+
+    function getInitials(name) {
+      if (!name) return "IT";
+      const parts = name.trim().split(/\s+/);
+      return parts.length >= 2 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0].substring(0, 2).toUpperCase();
+    }
+
+    function getAvatar(name) {
+      const initials = getInitials(name);
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      const p = MONOGRAM_PALETTES[Math.abs(hash) % MONOGRAM_PALETTES.length];
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+        <defs><linearGradient id="g_${initials}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${p.bg1}"/><stop offset="100%" stop-color="${p.bg2}"/>
+        </linearGradient></defs>
+        <circle cx="60" cy="60" r="58" fill="url(#g_${initials})" stroke="#fff" stroke-width="4"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+        <text x="60" y="74" font-size="42" font-weight="900" fill="#fff" text-anchor="middle" font-family="'Plus Jakarta Sans',sans-serif">${initials}</text>
+      </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    function getAppState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch(e) {}
+      }
+      return null;
+    }
+
+    function getStudents() {
+      const state = getAppState();
+      if (state && state.students && state.students.length > 0) return state.students;
+      return [];
+    }
+
+    // JONLI EFIRDA PROYEKTORDAN BALL BERISH / AYIRISH
+    function awardScoreFromTv(studentId, amount) {
+      const state = getAppState();
+      if (!state || !state.students) return;
+
+      const student = state.students.find(s => s.id === studentId);
+      if (!student) return;
+
+      student.xp += amount;
+      if (amount > 0) student.tasks = (student.tasks || 0) + 1;
+
+      state.history = state.history || [];
+      state.history.unshift({
+        title: `Jonli Efir: ${amount > 0 ? '+' : ''}${amount} XP (${student.name.split(' ')[0]})`,
+        time: "Hozirgina",
+        xp: amount,
+        isPlus: amount > 0
+      });
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      if (window.CloudDB) {
+        CloudDB.save(state);
+      }
+
+      if (amount > 0 && typeof confetti === 'function') {
+        confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
+      }
+
+      renderTv();
+    }
+
+    function updateGroupButtons(students) {
+      const bar = document.getElementById('groupButtonsBar');
+      const groups = Array.from(new Set(students.map(s => s.group))).filter(Boolean);
+
+      let html = `<button class="group-filter-btn ${currentGroup === 'ALL' ? 'active' : ''}" onclick="setGroup('ALL')">Barchasi 🌐</button>`;
+      groups.forEach(g => {
+        html += `<button class="group-filter-btn ${currentGroup === g ? 'active' : ''}" onclick="setGroup('${g}')">${g}</button>`;
+      });
+      bar.innerHTML = html;
+    }
+
+    function renderTv() {
+      const all = getStudents();
+      updateGroupButtons(all);
+
+      let filtered = [...all];
+      if (currentGroup !== 'ALL') {
+        filtered = filtered.filter(s => s.group === currentGroup);
+      }
+      filtered.sort((a, b) => b.xp - a.xp);
+
+      // Title & Count
+      document.getElementById('listTitle').innerText = currentGroup === 'ALL' 
+        ? '📋 Barcha O\'quvchilar Reytingi' : `📋 ${currentGroup} Reytingi`;
+      document.getElementById('listCount').innerText = `Jami: ${filtered.length} o'quvchi`;
+
+      // 1. TOP 3 PODIUM
+      const podium = document.getElementById('podiumSection');
+      if (filtered.length >= 3) {
+        podium.style.display = 'block';
+        ['p1', 'p2', 'p3'].forEach((pId, idx) => {
+          const s = filtered[idx];
+          if (s) {
+            document.getElementById(`${pId}Name`).innerText = s.name;
+            document.getElementById(`${pId}Group`).innerText = s.group;
+            document.getElementById(`${pId}Xp`).innerText = `${s.xp} XP`;
+            document.getElementById(`${pId}Avatar`).src = getAvatar(s.name);
+          }
+        });
+
+        if (lastTopXp !== 0 && filtered[0].xp > lastTopXp && typeof confetti === 'function') {
+          confetti({ particleCount: 120, spread: 80, origin: { y: 0.4 } });
+        }
+        lastTopXp = filtered[0] ? filtered[0].xp : 0;
+      } else if (filtered.length > 0) {
+        podium.style.display = 'block';
+        if (filtered[0]) {
+          document.getElementById('p1Name').innerText = filtered[0].name;
+          document.getElementById('p1Group').innerText = filtered[0].group;
+          document.getElementById('p1Xp').innerText = `${filtered[0].xp} XP`;
+          document.getElementById('p1Avatar').src = getAvatar(filtered[0].name);
+        }
+      } else {
+        podium.style.display = 'none';
+      }
+
+      // 2. QOLGAN VA BARCHA O'QUVCHILAR RO'YXATI
+      const grid = document.getElementById('studentsGrid');
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="text-align:center; padding:40px; color:#94a3b8; font-weight:700;">Bu guruhda o\'quvchilar topilmadi</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map((s, idx) => {
+        let rowClass = '';
+        let rankClass = '';
+        let rankText = `#${idx + 1}`;
+        if (idx === 0) { rowClass = 'top1'; rankClass = 'r1'; rankText = '🥇'; }
+        else if (idx === 1) { rowClass = 'top2'; rankClass = 'r2'; rankText = '🥈'; }
+        else if (idx === 2) { rowClass = 'top3'; rankClass = 'r3'; rankText = '🥉'; }
+
+        return `
+          <div class="student-row ${rowClass}">
+            <div class="student-left">
+              <div class="student-rank ${rankClass}">${rankText}</div>
+              <img class="student-avatar" src="${getAvatar(s.name)}" alt="">
+              <div class="student-meta">
+                <div class="student-name">${s.name}</div>
+                <div class="student-group">${s.group}</div>
+              </div>
+            </div>
+            <div class="student-right">
+              <div class="student-xp">${s.xp} XP</div>
+              <div class="score-btns">
+                <button class="score-btn plus10" onclick="awardScoreFromTv(${s.id}, 10)" title="+10 XP qo'shish">+10</button>
+                <button class="score-btn plus5" onclick="awardScoreFromTv(${s.id}, 5)" title="+5 XP qo'shish">+5</button>
+                <button class="score-btn minus5" onclick="awardScoreFromTv(${s.id}, -5)" title="-5 XP ayirish">-5</button>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function setGroup(grp) {
+      currentGroup = grp;
+      renderTv();
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    // Jonli sinxronizatsiya
+    window.addEventListener('storage', () => renderTv());
+    setInterval(renderTv, 2000);
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTv();
+      if (window.CloudDB) {
+        CloudDB.init({
+          onData: (cloudData) => {
+            if (cloudData && cloudData.students) {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData));
+              renderTv();
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

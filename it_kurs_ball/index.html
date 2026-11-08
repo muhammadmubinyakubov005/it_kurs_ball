@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>IT PARK ACADEMY — Ta'lim Markazi Tizimi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container" style="padding-bottom: 40px;">
+    
+    <!-- Yuqori Asosiy Navbar -->
+    <nav class="top-navbar">
+      <div class="brand-info">
+        <div class="brand-logo" style="background: linear-gradient(135deg, #4f46e5, #0891b2);">IT</div>
+        <div>
+          <h1 class="brand-name" data-i18n="brandTitle" style="font-size: 1.1rem; color: #fff;">IT PARK ACADEMY</h1>
+          <p class="brand-tag" data-i18n="brandSubtitle" style="font-size: 0.72rem; color: #94a3b8;">Ta'lim Markazi Tizimi</p>
+        </div>
+      </div>
+
+      <!-- Mehmon navigatsiyasi (Admin kirish joyi ko'rinmaydi) -->
+      <div id="navGuestActions" class="nav-links-wrap">
+        <span class="cloud-status-badge" id="cloudStatusBadge" title="Yagona umumiy bulutli baza holati">☁️ Bulut: Tekshirilmoqda</span>
+        <a class="nav-link-item" onclick="scrollToCourses()" data-i18n="navCourses">Kurslar</a>
+        <a class="nav-link-item" onclick="scrollToFeatures()" data-i18n="navFeatures">Afzalliklar</a>
+        <a class="nav-link-item" onclick="scrollToRegister()" data-i18n="navRegister">Ro'yxatdan o'tish</a>
+        <button class="btn-auth-trigger" onclick="openStudentAuthModal()">
+          <span data-i18n="navLogin">👨‍🎓 O'quvchi Kabineti</span>
+        </button>
+        <button class="lang-switch-btn" id="langSwitchBtn" onclick="toggleLanguage()">
+          🇺🇿 UZ
+        </button>
+      </div>
+
+      <!-- O'quvchi kirgandagi navigatsiya -->
+      <div id="navUserActions" class="nav-links-wrap" style="display: none;">
+        <span class="cloud-status-badge" id="cloudUserStatusBadge" title="Yagona umumiy bulutli baza holati">☁️ Bulut: Tekshirilmoqda</span>
+        <button class="btn-logout" onclick="studentLogout()">
+          <span data-i18n="navLogout">🚪 Chiqish</span>
+        </button>
+        <button class="lang-switch-btn" onclick="toggleLanguage()">
+          🇺🇿 UZ
+        </button>
+      </div>
+    </nav>
+
+    <!-- ========================================================
+         1. MEHMON SAHIFASI (FAQAT KURS VA RO'YXATDAN O'TISH)
+         ======================================================== -->
+    <main id="viewGuestLanding" class="view-section">
+      <!-- Hero Section -->
+      <section class="landing-hero" style="border-radius: 0 0 20px 20px;">
+        <div style="display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); padding:4px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; margin-bottom:12px;">
+          📍 Faqat Qo'qon shahar — Noib ko'prigi MFY
+        </div>
+        <h2 class="hero-title-main" data-i18n="heroTitle" style="font-size: 1.85rem; max-width: 800px; margin: 0 auto 14px;">
+          Kompyuter Savodxonligi (0 dan) va Sun'iy Intellekt (AI) Kurslari
+        </h2>
+        <p class="hero-subtitle-main" data-i18n="heroSubtitle" style="font-size: 0.95rem; margin-bottom: 24px;">
+          Bolalarga kompyuterni 0 dan o'rgatish, zamonaviy Sun'iy Intellekt (AI, ChatGPT) bilan ishlash va Prompt Engineering bo'yicha amaliy mashg'ulotlar. Qo'qondagi Noib ko'prigi MFY filialida!
+        </p>
+
+        <div class="hero-cta-wrap">
+          <button class="btn-hero-lead" onclick="scrollToRegister()">
+            <span data-i18n="btnRegisterTrial">🎯 Bepul sinov darsiga yozilish</span>
+          </button>
+          <button class="btn-hero-secondary" onclick="scrollToCourses()">
+            <span>Yo'nalish bilan tanishish 🤖</span>
+          </button>
+        </div>
+      </section>
+
+      <div class="landing-body-wrap">
+        <!-- Afzalliklar -->
+        <div id="featuresSection" class="landing-features-grid" style="margin-top: 10px;">
+          <div class="feat-card">
+            <div class="feat-icon-bubble" style="background:#e0e7ff; color:#4338ca;">🤖</div>
+            <h4 class="feat-title">Sun'iy Intellekt & Prompt Engineering</h4>
+            <p class="feat-desc">Bolalarga AI (Sun'iy intellekt) qanday ishlashi, ChatGPT va neyrotarmoqlarga to'g'ri topshiriq (prompt) berish san'atini o'rgatamiz.</p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon-bubble" style="background:#ecfdf5; color:#047857;">💻</div>
+            <h4 class="feat-title">Kompyuterni 0 dan O'rganish</h4>
+            <p class="feat-desc">Kompyuterdan to'g'ri foydalanish, tezkor matn terish, dasturlar, fayllar bilan ishlash va internet xavfsizligi.</p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon-bubble" style="background:#fef3c7; color:#b45309;">📍</div>
+            <h4 class="feat-title">Qo'qon — Noib Ko'prigi MFY</h4>
+            <p class="feat-desc">Har bir bolaga alohida zamonaviy kompyuter, shinam o'quv xonalari va tajribali ustozlar ko'magi.</p>
+          </div>
+        </div>
+
+        <!-- Kurslar Ro'yxati -->
+        <div style="margin: 30px 0 10px;">
+          <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">Asosiy Ta'lim Yo'nalishi</h3>
+          <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 16px;">Bizda yagona va chuqurlashtirilgan amaliy dastur asosida ta'lim beriladi</p>
+          <div class="courses-catalog-grid" id="guestCoursesGrid">
+            <!-- JS orqali to'ldiriladi -->
+          </div>
+        </div>
+
+        <!-- Ro'yxatdan O'tish Formasi (Bosh sahifaning o'zida) -->
+        <section id="registerSection" class="landing-register-section">
+          <div class="clean-badge">Qo'qon filiali • Qabul ochiq</div>
+          <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+            Bepul Sinov Darsiga Ro'yxatdan O'tish
+          </h3>
+          <p style="font-size: 0.86rem; color: #64748b; margin-bottom: 20px;">
+            Ma'lumotlaringizni qoldiring, administratorimiz siz bilan bog'lanib, o'quvchi uchun qulay dars vaqtini belgilaydi.
+          </p>
+
+          <form id="guestRegisterForm" onsubmit="submitGuestRegistration(event)" style="max-width: 600px;">
+            <div class="form-group">
+              <label>F.I.SH (O'quvchi ism va familiyasi):</label>
+              <input type="text" id="regName" class="app-input" placeholder="Masalan: Sardor Komilov" required>
+            </div>
+
+            <div class="form-group">
+              <label>Telefon raqamingiz (Ota-ona yoki o'quvchi):</label>
+              <input type="tel" id="regPhone" class="app-input" placeholder="+998 90 123 45 67" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+              <div class="form-group">
+                <label>Ta'lim yo'nalishi:</label>
+                <select id="regCourseSelect" class="app-select">
+                  <option value="Kompyuter Savodxonligi (0 dan) & Sun'iy Intellekt (AI) va Prompt Engineering" selected>Kompyuter Savodxonligi (0 dan) & Sun'iy Intellekt (AI)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Qulay dars vaqti:</label>
+                <select id="regTimeSelect" class="app-select">
+                  <option value="10:00 (Ertalabki)">10:00 (Ertalabki guruh)</option>
+                  <option value="13:00 (Tushki)">13:00 (Tushki guruh)</option>
+                  <option value="15:00 (Kunduzgi)">15:00 (Kunduzgi guruh)</option>
+                  <option value="17:00 (Kechki)">17:00 (Kechki guruh)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Filial va Manzil:</label>
+              <select id="regBranchSelect" class="app-select">
+                <option value="Qo'qon filiali (Noib ko'prigi MFY)" selected>Qo'qon filiali (Noib ko'prigi MFY)</option>
+              </select>
+              <small style="color: #64748b; font-size: 0.78rem; margin-top: 4px; display: block;">📍 Joylashuv: Farg'ona viloyati, Qo'qon shahar, Noib ko'prigi MFY.</small>
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top: 10px; width: 100%; padding: 12px;">
+              Arizani Yuborish
+            </button>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <!-- ========================================================
+         2. O'QUVCHI KABINETI (FAQAT O'Z MA'LUMOTLARI)
+         ======================================================== -->
+    <main id="viewStudentPortal" class="view-section" style="display: none;">
+      <!-- O'quvchi ma'lumoti paneli -->
+      <div style="background: #ffffff; padding: 16px 22px; border-bottom: 1.5px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="" id="stHeaderAvatar" style="width: 44px; height: 44px; border-radius: 12px;">
+          <div>
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a;" id="stHeaderName">O'quvchi Ismi</h3>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+              <span style="font-size: 0.8rem; color: #64748b;" id="stHeaderGroup">1-Guruh</span>
+              <span style="font-size: 0.78rem; font-weight: 800; color: #4f46e5; background: #eef2ff; padding: 1px 8px; border-radius: 6px;" id="stHeaderId">ID: #1</span>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button type="button" class="btn-sm-action" onclick="setStudentSubTab('idcard')" style="background: #eef2ff; color: #4338ca; border: 1.5px solid #c7d2fe; padding: 6px 12px; border-radius: 8px; font-weight: 800; cursor: pointer;">
+            🪪 Guvohnoma
+          </button>
+          <button type="button" class="btn-sm-action" onclick="openChangePasswordModal()" style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer;">
+            🔑 Parolni o'zgartirish
+          </button>
+          <div style="background: #eef2ff; color: #4f46e5; padding: 6px 14px; border-radius: 20px; font-weight: 900; font-size: 0.9rem;" id="stHeaderXp">
+            ⭐ 0 XP
+          </div>
+        </div>
+      </div>
+
+      <!-- O'quvchi Sub-Tab Navigatsiyasi -->
+      <div class="sub-tabs-bar" id="studentSubTabsBar">
+        <button class="sub-tab-btn active" data-subtab="schedule" onclick="setStudentSubTab('schedule')">
+          <span data-i18n="tabSchedule">📅 Dars Jadvali</span>
+        </button>
+        <button class="sub-tab-btn" data-subtab="videos" onclick="setStudentSubTab('videos')">
+          <span data-i18n="tabVideos">🎥 Video Darslar & Arxiv</span>
+        </button>
+        <button class="sub-tab-btn" data-subtab="homework" onclick="setStudentSubTab('homework')">
+          <span data-i18n="tabHomework">📝 Uyga Vazifalar</span>
+        </button>
+        <button class="sub-tab-btn" data-subtab="leaderboard" onclick="setStudentSubTab('leaderboard')">
+          <span data-i18n="tabLeaderboard">🏆 Reyting</span>
+        </button>
+        <button class="sub-tab-btn" data-subtab="shop" onclick="setStudentSubTab('shop')">
+          <span data-i18n="tabShop">🛍️ Do'kon & Buyurtmalar</span>
+        </button>
+        <button class="sub-tab-btn" data-subtab="idcard" onclick="setStudentSubTab('idcard')">
+          <span data-i18n="tabIdCard">🪪 Guvohnoma (ID Card)</span>
+        </button>
+      </div>
+
+      <div class="student-content-wrap">
+        <!-- Jadval -->
+        <div id="stContentSchedule">
+          <div id="stScheduleBox"></div>
+        </div>
+
+        <!-- Video Darslar -->
+        <div id="stContentVideos" style="display: none;">
+          <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 12px;">Dars Yozuvlari va Konspektlar</h4>
+          <div class="video-archive-grid" id="stVideosBox"></div>
+        </div>
+
+        <!-- Uyga Vazifalar -->
+        <div id="stContentHomework" style="display: none;">
+          <!-- Ustoz e'lon qilgan faol vazifalar banneri -->
+          <div style="margin-bottom: 20px;">
+            <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 10px;">
+              📌 Ustoz E'lon Qilgan Vazifalar
+            </h4>
+            <div id="stActiveTasksBox" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 20px;"></div>
+          </div>
+
+          <div class="admin-desktop-grid">
+            <div class="hw-assignment-card">
+              <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 12px;">Yangi Vazifa Yuborish</h4>
+              <form id="hwSubmitForm" onsubmit="submitHomeworkForm(event)">
+                <div class="form-group">
+                  <label>Mavzuni tanlang:</label>
+                  <select id="hwTaskSelect" class="app-select">
+                    <!-- JS dinamik ravishda to'ldiradi -->
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>GitHub yoki Figma havolasi:</label>
+                  <input type="url" id="hwLinkInput" class="app-input" placeholder="https://github.com/... yoki https://figma.com/...">
+                </div>
+                <div class="form-group">
+                  <label>Qisqacha izoh:</label>
+                  <textarea id="hwNoteInput" class="app-input" rows="3" placeholder="Yechim bo'yicha ma'lumot va izohingiz"></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Vazifani Topshirish</button>
+              </form>
+            </div>
+
+            <div>
+              <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 12px;">Topshirilgan Vazifalar & Ustoz Bahosi</h4>
+              <div id="stHomeworkHistory"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reyting -->
+        <div id="stContentLeaderboard" style="display: none;">
+          <div id="stLeaderboardBox"></div>
+        </div>
+
+        <!-- Do'kon -->
+        <div id="stContentShop" style="display: none;">
+          <div id="stShopBox"></div>
+        </div>
+
+        <!-- O'quvchi Guvohnomasi (Kartochka) -->
+        <div id="stContentIdCard" style="display: none;">
+          <div id="stIdCardBox"></div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ========================================================
+       MODALLAR: O'QUVCHI KIRISHI (XAVFSIZ PAROL BILAN)
+       ======================================================== -->
+  <div class="modal-overlay" id="studentAuthModal">
+    <div class="modal-card" style="max-width: 440px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 class="modal-title" style="margin: 0; font-size: 1.2rem;">🔐 O'quvchi Kabinetiga Kirish</h3>
+        <button class="btn-cancel" style="padding: 4px 8px;" onclick="closeStudentAuthModal()">✕</button>
+      </div>
+
+      <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 16px;">
+        Shaxsiy kabinetingizga kirish uchun telefon raqamingiz (yoki ID raqam) hamda maxfiy parolingizni kiriting.
+      </p>
+
+      <form id="formStudentLogin" onsubmit="submitStudentLogin(event)">
+        <div class="form-group">
+          <label>Telefon raqam yoki O'quvchi ID:</label>
+          <input type="text" id="studentLoginInput" class="app-input" placeholder="+998 90 123 45 01 yoki ID: 1" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label>Maxfiy Parol (PIN-kod):</label>
+          <div style="position: relative;">
+            <input type="password" id="studentLoginPin" class="app-input" placeholder="Parolni kiriting" required autocomplete="current-password" style="padding-right: 42px;">
+            <button type="button" onclick="togglePasswordVisibility('studentLoginPin')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #64748b;" title="Parolni ko'rsatish/yashirish">👁️</button>
+          </div>
+          <span style="font-size: 0.76rem; color: #64748b; margin-top: 5px; display: block;">
+            💡 Standart boshlang'ich parol: <strong>1234</strong> (kabinet ichida o'zgartirish mumkin).
+          </span>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; margin-top: 10px; font-weight: 700;">
+          Kabinetga Kirish
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Parolni O'zgartirish Modali -->
+  <div class="modal-overlay" id="changePasswordModal">
+    <div class="modal-card" style="max-width: 420px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 class="modal-title" style="margin: 0; font-size: 1.15rem;">🔑 Parolni O'zgartirish</h3>
+        <button class="btn-cancel" style="padding: 4px 8px;" onclick="closeChangePasswordModal()">✕</button>
+      </div>
+
+      <form id="formChangePassword" onsubmit="submitChangePassword(event)">
+        <div class="form-group">
+          <label>Amaldagi (eski) parol:</label>
+          <input type="password" id="oldPasswordInput" class="app-input" placeholder="Hozirgi parol (masalan: 1234)" required>
+        </div>
+        <div class="form-group">
+          <label>Yangi parol (kamida 4 ta belgi):</label>
+          <input type="password" id="newPasswordInput" class="app-input" placeholder="Yangi maxfiy parol" required minlength="4">
+        </div>
+        <div class="form-group">
+          <label>Yangi parolni takrorlang:</label>
+          <input type="password" id="confirmPasswordInput" class="app-input" placeholder="Yangi parolni tasdiqlang" required minlength="4">
+        </div>
+        <div class="modal-actions" style="margin-top: 16px;">
+          <button type="button" class="btn-cancel" onclick="closeChangePasswordModal()">Bekor qilish</button>
+          <button type="submit" class="btn-primary">Saqlash</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Video Dars Player Modali -->
+  <div class="modal-overlay" id="videoPlayerModal">
+    <div class="modal-card" style="max-width: 650px; width: 95%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h4 id="videoModalTitle" style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;"></h4>
+        <button class="btn-cancel" style="padding: 4px 8px;" onclick="closeVideoModal()">✕</button>
+      </div>
+      <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 12px;" id="videoModalTeacher"></p>
+
+      <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px; background:#000; margin-bottom:12px;">
+        <iframe id="videoIframe" src="" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;" allowfullscreen></iframe>
+      </div>
+
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size: 0.84rem; color: #475569;">
+        <strong>Dars konspekti:</strong>
+        <p id="videoModalSummary" style="margin: 4px 0 8px;"></p>
+        <div id="videoModalNotes" style="color: #166534; background: #f0fdf4; padding: 6px 10px; border-radius: 6px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Firebase Realtime Database SDK (Markaziy umumiy bulutli baza) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="cloud-db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

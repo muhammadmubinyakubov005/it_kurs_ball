@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>IT PARK ACADEMY — Administrator & O'qituvchi Boshqaruvi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .admin-login-wrap {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body style="background: #f1f5f9;">
+
+  <div class="app-container" style="padding-bottom: 40px;">
+    
+    <!-- Navbar -->
+    <nav class="top-navbar" style="background: #090d16;">
+      <div class="brand-info">
+        <div class="brand-logo" style="background: linear-gradient(135deg, #0284c7, #4f46e5);">🛡️</div>
+        <div>
+          <h1 class="brand-name" style="font-size: 1.1rem; color: #fff;">IT PARK ACADEMY</h1>
+          <p class="brand-tag" style="font-size: 0.72rem; color: #94a3b8;">Administrator & CRM Paneli</p>
+        </div>
+      </div>
+
+      <div class="nav-links-wrap">
+        <span class="cloud-status-badge" id="adminCloudStatusBadge" onclick="switchAdminTab('cloud')" title="Bulutli baza holati (sozlash uchun bosing)">☁️ Bulut: Tekshirilmoqda</span>
+        <a href="index.html" class="nav-link-item" style="color: #38bdf8;">🌐 Asosiy Sayt</a>
+        <a href="proyektor.html" target="_blank" class="nav-link-item" style="color: #a7f3d0;">🖥️ Proyektor</a>
+        <button class="btn-logout" onclick="adminLogout()">🚪 Chiqish</button>
+      </div>
+    </nav>
+
+    <!-- 1. ADMIN PAROL BILAN KIRISH OYNASI -->
+    <div id="adminLoginSection" class="admin-login-wrap">
+      <div class="modal-card" style="box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1.5px solid #cbd5e1; width: 100%; max-width: 420px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="font-size: 2.5rem; margin-bottom: 8px;">🔐</div>
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #0f172a;">Administrator Kirishi</h2>
+          <p style="font-size: 0.85rem; color: #64748b;">O'quv markazi boshqaruv tizimi</p>
+        </div>
+
+        <form onsubmit="submitAdminLogin(event)">
+          <div class="form-group">
+            <label>Login:</label>
+            <input type="text" id="adminUsername" class="app-input" value="admin" required>
+          </div>
+          <div class="form-group">
+            <label>Parol:</label>
+            <input type="password" id="adminPassword" class="app-input" placeholder="Parolni kiriting (standart: admin123 yoki 7777)" required autofocus>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; margin-top: 10px; background: #0f172a;">
+            Boshqaruv Paneliga Kirish
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 2. ADMIN BOSHQARUV DASHBOARDI -->
+    <div id="adminDashboardSection" style="display: none;">
+      <!-- Sub-Tabs -->
+      <div class="sub-tabs-bar" id="adminSubTabs">
+        <button class="sub-tab-btn active" data-tab="leads" onclick="switchAdminTab('leads')">
+          📥 Yangi Arizalar (CRM)
+        </button>
+        <button class="sub-tab-btn" data-tab="attendance" onclick="switchAdminTab('attendance')">
+          📋 Davomat & To'lovlar
+        </button>
+        <button class="sub-tab-btn" data-tab="homework" onclick="switchAdminTab('homework')">
+          ✍️ Vazifalarni Tekshirish
+        </button>
+        <button class="sub-tab-btn" data-tab="content" onclick="switchAdminTab('content')">
+          🎬 Video & E'lonlar
+        </button>
+        <button class="sub-tab-btn" data-tab="shop" onclick="switchAdminTab('shop')">
+          🛍️ Do'kon & Buyurtmalar
+        </button>
+        <button class="sub-tab-btn" data-tab="points" onclick="switchAdminTab('points')">
+          ⚡ Ballar & Guruhlar
+        </button>
+        <button class="sub-tab-btn" data-tab="cloud" onclick="switchAdminTab('cloud')">
+          ☁️ Bulutli Baza (Firebase)
+        </button>
+      </div>
+
+      <div class="admin-content-wrap">
+        <!-- TAB 1: ARIZALAR CRM -->
+        <div id="secLeads">
+          <div class="crm-stats-summary">
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statTotalLeads" style="color: #4f46e5;">0</div>
+              <div class="metric-lbl">Jami Arizalar</div>
+            </div>
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statNewLeads" style="color: #2563eb;">0</div>
+              <div class="metric-lbl">Yangi</div>
+            </div>
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statContactedLeads" style="color: #d97706;">0</div>
+              <div class="metric-lbl">Bog'lanildi</div>
+            </div>
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statEnrolledLeads" style="color: #16a34a;">0</div>
+              <div class="metric-lbl">Darsga Keldi</div>
+            </div>
+          </div>
+
+          <!-- Qidiruv va Holat Filtri -->
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; align-items: center;">
+            <div style="flex: 1; min-width: 240px;">
+              <input type="text" id="searchLeadsInput" class="app-input" placeholder="🔍 Ariza beruvchi ismi, telefoni yoki kursi..." oninput="renderLeads()">
+            </div>
+            <select id="filterLeadStatus" class="app-select" style="max-width: 200px;" onchange="renderLeads()">
+              <option value="ALL">Barcha Holatlar</option>
+              <option value="Yangi">Yangi</option>
+              <option value="Bog'lanildi">Bog'lanildi</option>
+              <option value="Darsga keldi">Darsga keldi</option>
+            </select>
+          </div>
+
+          <div class="crm-table-container">
+            <table class="crm-table">
+              <thead>
+                <tr>
+                  <th>F.I.SH</th>
+                  <th>Telefon</th>
+                  <th>Kurs</th>
+                  <th>Vaqt</th>
+                  <th>Filial</th>
+                  <th>Holat</th>
+                  <th>Amal</th>
+                </tr>
+              </thead>
+              <tbody id="leadsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 2: DAVOMAT VA TO'LOVLAR -->
+        <div id="secAttendance" style="display: none;">
+          <div class="crm-stats-summary">
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statAttPaid" style="color: #16a34a;">0</div>
+              <div class="metric-lbl">To'langan</div>
+            </div>
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statAttPending" style="color: #d97706;">0</div>
+              <div class="metric-lbl">To'lov Kutilmoqda</div>
+            </div>
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statAttOverdue" style="color: #dc2626;">0</div>
+              <div class="metric-lbl">Qarzdorlar</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; align-items: center;">
+            <div style="flex: 1; min-width: 240px;">
+              <input type="text" id="searchAttendanceStudent" class="app-input" placeholder="🔍 O'quvchi ismi, ID (#DEV-...) yoki telefoni..." oninput="renderAttendance()">
+            </div>
+            <select id="filterGroup" class="app-select" style="max-width: 220px;" onchange="renderAttendance()">
+              <option value="ALL">Barcha Guruhlar</option>
+              <option value="1-Guruh (10:00)">1-Guruh (10:00)</option>
+              <option value="2-Guruh (Qizlar)">2-Guruh (Qizlar)</option>
+              <option value="3-Guruh (15:00)">3-Guruh (15:00)</option>
+              <option value="4-Guruh (17:00)">4-Guruh (17:00)</option>
+              <option value="5-Guruh (Du/Cho/Ju)">5-Guruh (Du/Cho/Ju)</option>
+            </select>
+            <select id="filterPayment" class="app-select" style="max-width: 200px;" onchange="renderAttendance()">
+              <option value="ALL">Barcha To'lovlar</option>
+              <option value="paid">To'langan 🟢</option>
+              <option value="pending">Kutilmoqda 🟡</option>
+              <option value="overdue">Qarzdor 🔴</option>
+            </select>
+            <button class="btn-cancel" onclick="resetAttendanceFilters()" style="padding: 8px 12px; font-size: 0.82rem;">Tozalash</button>
+          </div>
+
+          <div class="crm-table-container">
+            <table class="crm-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>O'quvchi</th>
+                  <th>Guruh</th>
+                  <th>Telefon</th>
+                  <th>Davomat</th>
+                  <th>To'lov</th>
+                </tr>
+              </thead>
+              <tbody id="attTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 3: VAZIFALARNI TEKSHIRISH -->
+        <div id="secHomework" style="display: none;">
+          <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 14px;">
+            Topshirilgan Uyga Vazifalarni Tekshirish va Baholash
+          </h4>
+          <div id="homeworkQueueList"></div>
+        </div>
+
+        <!-- TAB 4: VIDEO DARSLAR VA VAZIFALAR JOYLASH -->
+        <div id="secContent" style="display: none;">
+          <div class="admin-desktop-grid">
+            <!-- 1. VIDEO DARSLIK JOYLASH -->
+            <div>
+              <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 18px; margin-bottom: 20px;">
+                <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 12px;">
+                  🎥 Yangi Video Dars Joylash
+                </h4>
+                <div class="form-group">
+                  <label>Dars mavzusi:</label>
+                  <input type="text" id="newVideoTitle" class="app-input" placeholder="Masalan: 5-Dars: React Hooks va API">
+                </div>
+                <div class="form-group">
+                  <label>YouTube video havolasi (link):</label>
+                  <input type="url" id="newVideoUrl" class="app-input" placeholder="https://www.youtube.com/watch?v=... yoki youtu.be/...">
+                  <small style="color: #64748b; font-size: 0.75rem; margin-top: 3px; display: block;">💡 Oddiy YouTube havolasini qo'ysangiz yetarli, tizim o'zi o'quvchilar ko'radigan qilib moslaydi.</small>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                  <div class="form-group" style="flex: 1;">
+                    <label>Davomiyligi:</label>
+                    <input type="text" id="newVideoDuration" class="app-input" placeholder="45 daqiqa">
+                  </div>
+                  <div class="form-group" style="flex: 1;">
+                    <label>O'qituvchi:</label>
+                    <input type="text" id="newVideoTeacher" class="app-input" value="Ustoz" placeholder="Ism familiya">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Qisqacha konspekt / izoh:</label>
+                  <textarea id="newVideoSummary" class="app-input" rows="2" placeholder="Darsda o'rganilgan asosiy tushunchalar"></textarea>
+                </div>
+                <button class="btn-primary" onclick="submitNewVideoLesson()" style="width: 100%;">
+                  🚀 Video Darsni Joylash
+                </button>
+              </div>
+
+              <div>
+                <h5 style="font-size: 0.95rem; font-weight: 800; color: #334155; margin-bottom: 10px;">
+                  Mavjud Video Darslar:
+                </h5>
+                <div id="adminVideosList"></div>
+              </div>
+            </div>
+
+            <!-- 2. UYGA VAZIFA JOYLASH -->
+            <div>
+              <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 18px; margin-bottom: 20px;">
+                <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 12px;">
+                  📝 Yangi Uyga Vazifa E'lon Qilish
+                </h4>
+                <div class="form-group">
+                  <label>Vazifa mavzusi (title):</label>
+                  <input type="text" id="newTaskTitle" class="app-input" placeholder="Masalan: Django REST API loyihasi">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                  <div class="form-group" style="flex: 1;">
+                    <label>Beriladigan XP ball:</label>
+                    <input type="number" id="newTaskXp" class="app-input" value="20" placeholder="XP">
+                  </div>
+                  <div class="form-group" style="flex: 1.5;">
+                    <label>Qaysi guruhga:</label>
+                    <select id="newTaskGroup" class="app-select">
+                      <option value="ALL">Barcha Guruhlar</option>
+                      <option value="1-Guruh (10:00)">1-Guruh (10:00)</option>
+                      <option value="2-Guruh (Qizlar)">2-Guruh (Qizlar)</option>
+                      <option value="3-Guruh (15:00)">3-Guruh (15:00)</option>
+                      <option value="4-Guruh (17:00)">4-Guruh (17:00)</option>
+                      <option value="5-Guruh (Du/Cho/Ju)">5-Guruh (Du/Cho/Ju)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Vazifa sharti va talablari:</label>
+                  <textarea id="newTaskDesc" class="app-input" rows="3" placeholder="O'quvchi nimalarni bajarishi va qayerga yuklashi kerak"></textarea>
+                </div>
+                <button class="btn-primary" onclick="submitNewHomeworkTask()" style="width: 100%;">
+                  📢 Vazifani E'lon Qilish
+                </button>
+              </div>
+
+              <div>
+                <h5 style="font-size: 0.95rem; font-weight: 800; color: #334155; margin-bottom: 10px;">
+                  E'lon Qilingan Vazifalar:
+                </h5>
+                <div id="adminTasksList"></div>
+              </div>
+            </div>
+
+            <!-- 3. DARS JADVALI E'LONINI CHIQARISH -->
+            <div style="grid-column: 1 / -1; margin-top: 14px;">
+              <div style="background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); border: 1.5px solid #bfdbfe; border-radius: 14px; padding: 18px; box-shadow: 0 2px 8px rgba(37,99,235,0.06);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                  <h4 style="font-size: 1.05rem; font-weight: 800; color: #1e3a8a; margin: 0;">
+                    📢 Dars Kunlari & Jadval E'lonini O'quvchilarga Chiqarish
+                  </h4>
+                  <span id="announceAudienceBadge" style="font-size: 0.78rem; background: #dbeafe; color: #1e40af; padding: 3px 10px; border-radius: 20px; font-weight: 800;">
+                    🎯 Tanlangan guruh o'quvchilariga ko'rinadi
+                  </span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px;">
+                  <div class="form-group">
+                    <label>Qaysi guruhga e'lon chiqarilsin?</label>
+                    <select id="adminAnnounceGroup" class="app-select">
+                      <option value="ALL">📢 Barcha Guruhlar (Hamma o'quvchilarga)</option>
+                      <option value="1-Guruh (10:00)">1-Guruh (10:00)</option>
+                      <option value="2-Guruh (Qizlar)">2-Guruh (Qizlar)</option>
+                      <option value="3-Guruh (15:00)">3-Guruh (15:00)</option>
+                      <option value="4-Guruh (17:00)">4-Guruh (17:00)</option>
+                      <option value="5-Guruh (Du/Cho/Ju)">5-Guruh (Du/Cho/Ju)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>E'lon Sarlavhasi:</label>
+                    <input type="text" id="adminAnnounceTitle" class="app-input" placeholder="Masalan: 1-Guruh uchun dars vaqti o'zgarishi">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>E'lon Matni:</label>
+                  <textarea id="adminAnnounceText" class="app-input" rows="3" placeholder="Masalan: Hurmatli o'quvchilar! Darslarimiz Qo'qon Noib ko'prigi MFY filialida jadval asosida muntazam o'tiladi..."></textarea>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.88rem; font-weight: 700; color: #334155;">
+                    <input type="checkbox" id="adminAnnounceActive" checked style="width: 16px; height: 16px;">
+                    O'quvchi kabinetida ko'rsatilsin (Faol)
+                  </label>
+                  <button class="btn-primary" onclick="submitScheduleAnnouncement()" style="padding: 10px 22px;">
+                    📢 E'lonni Saqlash & Yuborish
+                  </button>
+                </div>
+
+                <!-- Mavjud faol e'lonlar ro'yxati -->
+                <div style="margin-top: 16px; border-top: 1px solid #bfdbfe; padding-top: 12px;">
+                  <h5 style="font-size: 0.9rem; font-weight: 800; color: #1e3a8a; margin-bottom: 8px;">
+                    📋 Hozirgi Faol E'lonlar:
+                  </h5>
+                  <div id="adminAnnouncementsList"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: BALLAR & GURUHLAR -->
+        <div id="secPoints" style="display: none;">
+          <div class="admin-header" style="margin-bottom: 14px;">
+            <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">O'quvchilarga Ball Berish & Guruhlar</h4>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button class="btn-sm-action" onclick="awardAttendanceAll()">✅ Guruhga Davomat (+5 XP)</button>
+              <button class="btn-sm-action" onclick="openAddStudentModal()">+ Yangi O'quvchi</button>
+              <button class="btn-sm-action" onclick="forceRestoreOfficialPoints()" title="Barcha 22 ta o'quvchining rasmiy loyiha ballarini tiklash">⭐ Rasmiy ballarni tiklash</button>
+              <button class="btn-sm-action" onclick="reindexAllStudentIds()" title="Barcha o'quvchilar IDlarini 1, 2, 3... ketma-ketlikda qayta raqamlash">🔄 IDlarni tartiblash</button>
+              <button class="btn-sm-action" onclick="exportCsvData()">📊 CSV Yuklab Olish</button>
+            </div>
+          </div>
+
+          <!-- O'quvchilarni Qidiruv va Guruh Filtri -->
+          <div style="background: #ffffff; padding: 12px 16px; border-radius: 12px; border: 1.5px solid #e2e8f0; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px;">
+            <div style="flex: 1; min-width: 260px;">
+              <input type="text" id="searchPointsStudent" class="app-input" placeholder="🔍 Ism, ID (#1), yoki telefon bo'yicha tezkor qidirish..." oninput="filterPointsStudents()">
+            </div>
+            <select id="filterPointsGroup" class="app-select" style="max-width: 220px;" onchange="filterPointsStudents()">
+              <option value="ALL">Barcha Guruhlar</option>
+              <option value="1-Guruh (10:00)">1-Guruh (10:00)</option>
+              <option value="2-Guruh (Qizlar)">2-Guruh (Qizlar)</option>
+              <option value="3-Guruh (15:00)">3-Guruh (15:00)</option>
+              <option value="4-Guruh (17:00)">4-Guruh (17:00)</option>
+              <option value="5-Guruh (Du/Cho/Ju)">5-Guruh (Du/Cho/Ju)</option>
+            </select>
+            <button class="btn-cancel" onclick="resetPointsFilters()" style="padding: 8px 12px; font-size: 0.82rem;">Tozalash</button>
+          </div>
+
+          <div class="admin-desktop-grid">
+            <div class="admin-col-left">
+              <!-- Tanlangan o'quvchi ma'lumoti kartasi -->
+              <div id="selectedStudentCard" style="background: linear-gradient(135deg, #0f172a, #1e293b); color: #ffffff; padding: 16px; border-radius: 14px; margin-bottom: 14px; border: 1.5px solid #334155;">
+                <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; font-weight: 800; margin-bottom: 4px;">🎯 Hozir Tanlangan:</div>
+                <div style="font-size: 1.15rem; font-weight: 800; color: #f8fafc;" id="selStudentName">—</div>
+                <div style="font-size: 0.82rem; color: #94a3b8; margin-top: 3px;" id="selStudentMeta">—</div>
+                <div style="font-size: 1.05rem; font-weight: 900; color: #fbbf24; margin-top: 6px;" id="selStudentXp">⭐ 0 XP</div>
+              </div>
+
+              <div class="form-group">
+                <label>O'quvchi ro'yxatdan:</label>
+                <select id="pointsStudentSelect" class="app-select" onchange="onPointsSelectChange(this.value)"></select>
+              </div>
+
+              <div class="form-group">
+                <label>Tezkor ball berish / ayirish:</label>
+                <div class="quick-xp-buttons">
+                  <button class="xp-btn green" onclick="awardPoints(5, 'Faollik')">+5 Faollik</button>
+                  <button class="xp-btn green" onclick="awardPoints(10, 'Uy ishi')">+10 Uy ishi</button>
+                  <button class="xp-btn purple" onclick="awardPoints(20, 'Loyiha')">+20 Loyiha</button>
+                  <button class="xp-btn red" onclick="awardPoints(-5, 'Intizom')">-5 Intizom</button>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 10px;">
+                <label>Boshqa miqdorda ball qo'shish:</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="number" id="customXpInput" class="app-input" placeholder="Ball (masalan: 15 yoki -10)" style="max-width: 140px;">
+                  <input type="text" id="customXpReason" class="app-input" placeholder="Sababi (masalan: Musobaqa)">
+                  <button class="btn-primary" onclick="awardCustomPoints()">Berish</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-col-right">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h5 style="font-size: 0.9rem; font-weight: 800; color: #475569; margin: 0;">
+                  O'quvchilar Ro'yxati (<span id="pointsFilteredCount">0</span> ta):
+                </h5>
+                <small style="color: #64748b; font-size: 0.78rem;">💡 Ball berish uchun o'quvchi ustiga bosing</small>
+              </div>
+              <div class="admin-students-list" id="pointsStudentsList"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 6: DO'KON VA BUYURTMALAR -->
+        <div id="secShop" style="display: none;">
+          <!-- Statistikalar -->
+          <div class="crm-stats-summary">
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statTotalOrders" style="color: #4f46e5;">0</div>
+              <div class="metric-lbl">Jami Buyurtmalar</div>
+            </div>
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statPendingOrders" style="color: #d97706;">0</div>
+              <div class="metric-lbl">⏳ Berilmagan (Kutilmoqda)</div>
+            </div>
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statDeliveredOrders" style="color: #16a34a;">0</div>
+              <div class="metric-lbl">✅ Berildi (Topshirildi)</div>
+            </div>
+            <div class="crm-stat-box">
+              <div class="crm-stat-num" id="statShopItemsCount" style="color: #2563eb;">0</div>
+              <div class="metric-lbl">🛍️ Mahsulotlar Turi</div>
+            </div>
+          </div>
+
+          <!-- 1. O'quvchilar buyurtmalari -->
+          <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 18px; margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;">
+                  📦 O'quvchilar Buyurtmalari (Sovg'alar Navbati)
+                </h4>
+                <small style="color: #64748b; font-size: 0.8rem;">O'quvchi xarid qilgan sovg'ani topshirgach «Berildi» deb belgilang</small>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <input type="text" id="searchOrdersInput" class="app-input" placeholder="🔍 O'quvchi yoki sovg'a..." style="max-width: 220px;" oninput="renderAdminShop()">
+                <select id="filterOrdersStatus" class="app-select" style="max-width: 180px;" onchange="renderAdminShop()">
+                  <option value="ALL">Barcha Buyurtmalar</option>
+                  <option value="pending" selected>⏳ Faqat Berilmaganlar</option>
+                  <option value="delivered">✅ Faqat Berilganlar</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>#ID</th>
+                    <th>O'quvchi F.I.SH</th>
+                    <th>Guruhi</th>
+                    <th>Sovg'a / Mahsulot</th>
+                    <th>Narxi</th>
+                    <th>Vaqti</th>
+                    <th>Holati</th>
+                    <th style="text-align: right;">Amallar</th>
+                  </tr>
+                </thead>
+                <tbody id="adminOrdersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 2. Do'kon mahsulotlarini boshqarish -->
+          <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;">
+                  🛍️ Do'kon Mahsulotlari Vitrinasi
+                </h4>
+                <small style="color: #64748b; font-size: 0.8rem;">O'quvchilar ballari (XP) evaziga sotib olishi mumkin bo'lgan sovg'alar ro'yxati</small>
+              </div>
+              <button class="btn-primary" onclick="openAddProductModal()">
+                ➕ Yangi Mahsulot Qo'shish
+              </button>
+            </div>
+
+            <div id="adminShopProductsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;"></div>
+          </div>
+        </div>
+
+        <!-- TAB 7: BULUTLI BAZA (FIREBASE REALTIME DB) -->
+        <div id="secCloud" style="display: none;">
+          <div class="admin-header" style="margin-bottom: 16px;">
+            <div>
+              <h4 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">☁️ Markaziy Bulutli Baza & Realtime Sinxronizatsiya</h4>
+              <p style="font-size: 0.85rem; color: #64748b;">Sayt internetga joylanganda barcha o'quvchilar va admin uchun yagona jonli bazani ta'minlaydi</p>
+            </div>
+          </div>
+
+          <!-- Baza holati kartochkasi -->
+          <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 20px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+              <div>
+                <div style="font-size: 0.8rem; color: #64748b; font-weight: 700; text-transform: uppercase;">Ulanish Holati:</div>
+                <div id="cloudLiveStatusText" style="font-size: 1.25rem; font-weight: 900; color: #0f172a; margin-top: 4px;">
+                  🟡 Mahalliy rejim (Keshda ishlamoqda)
+                </div>
+                <p id="cloudLiveDbUrlText" style="font-size: 0.82rem; color: #64748b; margin-top: 4px;">
+                  Baza: Standart ichki rejim
+                </p>
+              </div>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button type="button" class="btn-primary" onclick="forcePushToCloud()" style="background: #2563eb;">
+                  📤 Barcha ma'lumotlarni bulutga yuklash (Push)
+                </button>
+                <button type="button" class="btn-sm-action" onclick="forcePullFromCloud()" style="background: #f1f5f9; color: #334155; border: 1.5px solid #cbd5e1;">
+                  📥 Bulutdan yuklab olish (Pull)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Firebase oson sozlash yo'riqnomasi va formasi -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+            <!-- Sozlash formasi -->
+            <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 20px;">
+              <h5 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 12px;">⚙️ Firebase Parametrlarini Kiritish</h5>
+              <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 16px;">
+                O'z bepul Firebase loyihangizning <strong>Database URL</strong> yoki to'liq <strong>firebaseConfig</strong> kodini joylang:
+              </p>
+
+              <form onsubmit="submitFirebaseConfigForm(event)">
+                <div class="form-group">
+                  <label>Firebase Realtime Database URL:</label>
+                  <input type="url" id="fbDbUrl" class="app-input" placeholder="https://sizning-loyihangiz-default-rtdb.firebaseio.com">
+                </div>
+                <div class="form-group">
+                  <label>API Key (ixtiyoriy):</label>
+                  <input type="text" id="fbApiKey" class="app-input" placeholder="AIzaSy...">
+                </div>
+                <div class="form-group">
+                  <label>Project ID:</label>
+                  <input type="text" id="fbProjectId" class="app-input" placeholder="it-park-qoqon">
+                </div>
+                <div class="form-group">
+                  <label>Yoki to'liq firebaseConfig kodini (JSON) qo'ying:</label>
+                  <textarea id="fbFullConfigText" class="app-input" rows="4" placeholder='const firebaseConfig = { apiKey: "...", databaseURL: "..." };'></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; padding: 12px;">
+                  💾 Saqlash va Ulanishni Faollashtirish
+                </button>
+              </form>
+            </div>
+
+            <!-- 3 qadamli yo'riqnoma -->
+            <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 20px;">
+              <h5 style="font-size: 1rem; font-weight: 800; color: #0f172a; margin-bottom: 12px;">📖 3 Daqiqada Bepul Bulutli Baza Ochish</h5>
+              <div style="font-size: 0.84rem; color: #334155; line-height: 1.6;">
+                <p style="margin-bottom: 10px;">
+                  <strong>1-qadam:</strong> <a href="https://console.firebase.google.com" target="_blank" style="color: #2563eb; font-weight: 700;">console.firebase.google.com</a> saytiga Google akkauntingiz bilan kiring va <strong>«Add project»</strong> (Loyiha qo'shish) tugmasini bosing.
+                </p>
+                <p style="margin-bottom: 10px;">
+                  <strong>2-qadam:</strong> Chap menyudan <strong>«Build» ➔ «Realtime Database»</strong> bo'limiga kiring. <strong>«Create Database»</strong> bosing va qoidalar (Rules) bo'limida <code>"read": true, "write": true</code> qilib belgilang.
+                </p>
+                <p style="margin-bottom: 10px;">
+                  <strong>3-qadam:</strong> Tepadagi bazaning havolasini (masalan: <code>https://it-park-xxxx.firebaseio.com</code>) ko'chirib, chap tarafdagi maydonga qo'ying va <strong>«Saqlash va Ulanish»</strong> tugmasini bosing.
+                </p>
+                <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 10px; margin-top: 14px; color: #065f46; font-size: 0.8rem;">
+                  🎉 <strong>Natija:</strong> Sayt internetga qo'yilganda siz kiritgan har bir ball va e'lon barcha o'quvchilar telefoniga shu soniyaning o'zidayoq jonli boradi!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Yangi O'quvchi Qo'shish Modali -->
+  <div class="modal-overlay" id="addStudentModal">
+    <div class="modal-card">
+      <h3 class="modal-title">Yangi O'quvchi Qo'shish</h3>
+      <div class="form-group">
+        <label>F.I.SH:</label>
+        <input type="text" id="newStudentName" class="app-input" placeholder="Ism familiya">
+      </div>
+      <div class="form-group">
+        <label>Guruh:</label>
+        <select id="newStudentGroup" class="app-select">
+          <option value="1-Guruh (10:00)">1-Guruh (10:00)</option>
+          <option value="2-Guruh (Qizlar)">2-Guruh (Qizlar)</option>
+          <option value="3-Guruh (15:00)">3-Guruh (15:00)</option>
+          <option value="4-Guruh (17:00)">4-Guruh (17:00)</option>
+          <option value="5-Guruh (Du/Cho/Ju)">5-Guruh (Du/Cho/Ju)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Telefon raqami:</label>
+        <input type="tel" id="newStudentPhone" class="app-input" placeholder="+998 90 123 45 67">
+      </div>
+      <div class="form-group">
+        <label>Dars Kunlari:</label>
+        <select id="newStudentDays" class="app-select">
+          <option value="Dushanba / Chorshanba / Juma">Dushanba / Chorshanba / Juma (Toq kunlar)</option>
+          <option value="Seshanba / Payshanba / Shanba" selected>Seshanba / Payshanba / Shanba (Juft kunlar)</option>
+          <option value="Shanba / Yakshanba">Shanba / Yakshanba (Dam olish kunlari)</option>
+          <option value="Har kuni (Dush - Juma)">Har kuni (Dush - Juma)</option>
+          <option value="Individual Jadval">Individual Jadval</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Dars Vaqti & Xona:</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="newStudentTime" class="app-input" placeholder="Vaqt: 10:00 - 12:00" value="10:00 - 12:00">
+          <input type="text" id="newStudentRoom" class="app-input" placeholder="Xona: 302-xona" value="302-xona">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Shaxsiy Parol (PIN-kod):</label>
+        <input type="text" id="newStudentPin" class="app-input" value="1234" placeholder="Masalan: 1234">
+      </div>
+      <div class="form-group">
+        <label>Boshlang'ich XP:</label>
+        <input type="number" id="newStudentXp" class="app-input" value="10">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('addStudentModal')">Bekor qilish</button>
+        <button class="btn-primary" onclick="submitNewStudent()">Qo'shish</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- O'quvchini Tahrirlash Modali -->
+  <div class="modal-overlay" id="editStudentModal">
+    <div class="modal-card">
+      <h3 class="modal-title">O'quvchini Tahrirlash</h3>
+      <div class="form-group">
+        <label>F.I.SH:</label>
+        <input type="text" id="editStudentName" class="app-input">
+      </div>
+      <div class="form-group">
+        <label>Guruh:</label>
+        <select id="editStudentGroup" class="app-select">
+          <option value="1-Guruh (10:00)">1-Guruh (10:00)</option>
+          <option value="2-Guruh (Qizlar)">2-Guruh (Qizlar)</option>
+          <option value="3-Guruh (15:00)">3-Guruh (15:00)</option>
+          <option value="4-Guruh (17:00)">4-Guruh (17:00)</option>
+          <option value="5-Guruh (Du/Cho/Ju)">5-Guruh (Du/Cho/Ju)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Dars Kunlari:</label>
+        <select id="editStudentDays" class="app-select">
+          <option value="Dushanba / Chorshanba / Juma">Dushanba / Chorshanba / Juma (Toq kunlar)</option>
+          <option value="Seshanba / Payshanba / Shanba">Seshanba / Payshanba / Shanba (Juft kunlar)</option>
+          <option value="Shanba / Yakshanba">Shanba / Yakshanba (Dam olish kunlari)</option>
+          <option value="Har kuni (Dush - Juma)">Har kuni (Dush - Juma)</option>
+          <option value="Individual Jadval">Individual Jadval</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Dars Vaqti & Xona:</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="editStudentTime" class="app-input" placeholder="Vaqt: 10:00 - 12:00">
+          <input type="text" id="editStudentRoom" class="app-input" placeholder="Xona: 302-xona">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>XP Ball:</label>
+        <input type="number" id="editStudentXp" class="app-input">
+      </div>
+      <div class="form-group">
+        <label>Shaxsiy Parol (PIN-kod):</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="editStudentPin" class="app-input" placeholder="Parol">
+          <button type="button" class="btn-cancel" onclick="resetStudentPinToDefault()" style="white-space: nowrap; padding: 0 12px; font-size: 0.8rem; font-weight:700;">1234 ga tiklash</button>
+        </div>
+      </div>
+      <input type="hidden" id="editStudentId">
+      <div class="modal-actions">
+        <button class="btn-cancel" style="background:#fee2e2; color:#b91c1c;" onclick="deleteStudent()">O'chirish</button>
+        <button class="btn-cancel" onclick="closeModal('editStudentModal')">Bekor qilish</button>
+        <button class="btn-primary" onclick="submitEditStudent()">Saqlash</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Yangi / Tahrirlash Mahsulot Modali -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-card">
+      <h3 class="modal-title" id="productModalTitle">Yangi Mahsulot Qo'shish</h3>
+      <input type="hidden" id="productModalId">
+      <div class="form-group">
+        <label>Emoji / Belgi (Ikonka):</label>
+        <input type="text" id="productEmoji" class="app-input" placeholder="🎁, 👕, 🎧, 🍫, 🚀, 💻, ☕, 🎮" value="🎁">
+      </div>
+      <div class="form-group">
+        <label>Mahsulot Nomi:</label>
+        <input type="text" id="productName" class="app-input" placeholder="Masalan: IT Park Brendli Futbolkasi">
+      </div>
+      <div class="form-group">
+        <label>Qisqacha Tavsifi:</label>
+        <textarea id="productDesc" class="app-input" rows="2" placeholder="Masalan: Maxsus yosh dasturchilar uchun sifatli paxta futbolka"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Narxi (XP ball):</label>
+        <input type="number" id="productXp" class="app-input" placeholder="Masalan: 150" value="100">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('productModal')">Bekor qilish</button>
+        <button class="btn-primary" onclick="submitProductForm()">Saqlash</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Firebase Realtime Database SDK (Markaziy umumiy bulutli baza) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="cloud-db.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
