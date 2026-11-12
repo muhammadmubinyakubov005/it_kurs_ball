@@ -442,7 +442,7 @@ function renderAttendance() {
   }
 
   if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 24px;">Qidiruv bo'yicha o'quvchi topilmadi.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 24px;">Qidiruv bo'yicha o'quvchi topilmadi.</td></tr>`;
     return;
   }
 
@@ -457,13 +457,6 @@ function renderAttendance() {
         </div>
       </td>
       <td>${s.phone}</td>
-      <td>
-        <div style="display:flex; gap:4px;">
-          <button class="btn-status-toggle" style="${s.attendance === 'present' ? 'background:#dcfce7; color:#166534; font-weight:900;' : ''}" onclick="setStudentAttendance(${s.id}, 'present')">Kelgan</button>
-          <button class="btn-status-toggle" style="${s.attendance === 'late' ? 'background:#fef3c7; color:#92400e; font-weight:900;' : ''}" onclick="setStudentAttendance(${s.id}, 'late')">Kechikkan</button>
-          <button class="btn-status-toggle" style="${s.attendance === 'absent' ? 'background:#fee2e2; color:#991b1b; font-weight:900;' : ''}" onclick="setStudentAttendance(${s.id}, 'absent')">Kelmadi</button>
-        </div>
-      </td>
       <td>
         <span class="payment-badge ${s.paymentStatus}" onclick="cyclePayment(${s.id})" style="cursor: pointer;" title="O'zgartirish uchun bosing">
           ${s.paymentStatus === 'paid' ? '🟢 To\'langan' : s.paymentStatus === 'overdue' ? '🔴 Qarzdor' : '🟡 Kutilmoqda'}
