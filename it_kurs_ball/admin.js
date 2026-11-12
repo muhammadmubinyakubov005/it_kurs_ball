@@ -531,9 +531,8 @@ function renderHomeworkReview() {
       </div>
 
       <p style="font-size: 0.84rem; color: #334155; margin-bottom: 6px;"><strong>Izoh:</strong> ${sub.note}</p>
-      <p style="font-size: 0.8rem; margin-bottom: 12px;">
-        🔗 Havola: <a href="${sub.url}" target="_blank" style="color: #2563eb; font-weight: 700;">${sub.url}</a>
-      </p>
+      ${sub.url ? `<p style="font-size: 0.8rem; margin-bottom: 10px;">🔗 Havola: <a href="${sub.url}" target="_blank" style="color: #2563eb; font-weight: 700;">${sub.url}</a></p>` : ''}
+      ${sub.image ? `<div style="margin-bottom: 12px;"><img src="${sub.image}" alt="O'quvchi vazifasi" style="max-width: 100%; max-height: 280px; border-radius: 10px; border: 1px solid #e2e8f0; cursor: pointer;" onclick="const w=window.open(); if(w) w.document.write('<img src=\\''+this.src+'\\' style=\\'max-width:100%\\'>');" title="Kattalashtirish uchun bosing"></div>` : ''}
 
       ${sub.status === 'pending' ? `
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">

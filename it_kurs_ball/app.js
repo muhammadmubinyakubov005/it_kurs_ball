@@ -900,9 +900,8 @@ function renderHomework(st) {
           </span>
         </div>
         <p style="font-size: 0.82rem; color: #475569; margin-bottom: 4px;"><strong>Yechim:</strong> ${s.note}</p>
-        <p style="font-size: 0.8rem; margin-bottom: 6px;">
-          🔗 <a href="${s.url}" target="_blank" style="color: #2563eb;">${s.url}</a>
-        </p>
+        ${s.url ? `<p style="font-size: 0.8rem; margin-bottom: 6px;">🔗 <a href="${s.url}" target="_blank" style="color: #2563eb;">${s.url}</a></p>` : ''}
+        ${s.image ? `<div style="margin: 6px 0 8px;"><img src="${s.image}" alt="Vazifa rasmi" style="max-width: 100%; max-height: 220px; border-radius: 10px; border: 1px solid #e2e8f0; cursor: pointer;" onclick="const w=window.open(); if(w) w.document.write('<img src=\\''+this.src+'\\' style=\\'max-width:100%\\'>');" title="Kattalashtirish uchun bosing"></div>` : ''}
         ${s.feedback ? `
           <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 8px 12px; border-radius: 10px; font-size: 0.8rem; color: #166534;">
             👨‍🏫 <strong>Ustoz xulosasi:</strong> "${s.feedback}"
@@ -911,6 +910,55 @@ function renderHomework(st) {
       </div>
     `).join('');
   }
+}
+
+let pendingHwImageData = "";
+
+function handleHomeworkImageSelect(input) {
+  const file = input?.files?.[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) {
+    showToast("Iltimos, faqat rasm faylini tanlang!", "error");
+    input.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxDim = 900;
+      let w = img.width;
+      let h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else { w = Math.round(w * maxDim / h); h = maxDim; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      pendingHwImageData = canvas.toDataURL('image/jpeg', 0.72);
+
+      const preview = document.getElementById('hwImagePreview');
+      const wrap = document.getElementById('hwImagePreviewWrap');
+      if (preview) preview.src = pendingHwImageData;
+      if (wrap) wrap.style.display = 'block';
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearHomeworkImage() {
+  pendingHwImageData = "";
+  const input = document.getElementById('hwImageInput');
+  const wrap = document.getElementById('hwImagePreviewWrap');
+  const preview = document.getElementById('hwImagePreview');
+  if (input) input.value = "";
+  if (preview) preview.src = "";
+  if (wrap) wrap.style.display = 'none';
 }
 
 function submitHomeworkForm(e) {
@@ -922,8 +970,8 @@ function submitHomeworkForm(e) {
   const link = document.getElementById('hwLinkInput').value.trim();
   const note = document.getElementById('hwNoteInput').value.trim();
 
-  if (!link && !note) {
-    showToast("Iltimos, havola yoki yechim matnini yozing!", "error");
+  if (!link && !note && !pendingHwImageData) {
+    showToast("Iltimos, havola, rasm yoki yechim matnini yuboring!", "error");
     return;
   }
 
@@ -932,8 +980,9 @@ function submitHomeworkForm(e) {
     studentId: st.id,
     studentName: st.name,
     taskTitle: task,
-    url: link || "https://github.com",
-    note: note || "Vazifa topshirildi",
+    url: link || "",
+    image: pendingHwImageData || "",
+    note: note || (pendingHwImageData ? "Rasm orqali topshirildi" : "Vazifa topshirildi"),
     status: "pending",
     score: null,
     feedback: null,
@@ -942,6 +991,7 @@ function submitHomeworkForm(e) {
 
   saveState();
   document.getElementById('hwSubmitForm').reset();
+  clearHomeworkImage();
   showToast("Vazifangiz qabul qilindi! O'qituvchi tekshirib ball qo'yadi.", "success");
   renderHomework(st);
 }
