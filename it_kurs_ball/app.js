@@ -360,10 +360,15 @@ function initStudentCloudSync() {
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
 
-        // Agar o'quvchi kabinetida bo'lsa, balli va ma'lumotlarini jonli yangilaymiz
+        // Agar o'quvchi kabinetida bo'lsa, ruxsat va ma'lumotlarini jonli yangilaymiz
         if (currentStudentId) {
           const st = appState.students.find(s => s.id === currentStudentId);
-          if (st) {
+          if (!st || st.canLogin !== true) {
+            currentStudentId = null;
+            saveSession();
+            applyView();
+            showToast("Akkauntga kirish ruxsati o'qituvchi tomonidan yopildi.", "warning");
+          } else {
             renderStudentPortal(st);
             if (typeof renderSubTab === 'function' && currentStudentSubTab) {
               renderSubTab(currentStudentSubTab, st);
@@ -617,6 +622,11 @@ function submitStudentLogin(e) {
 
   if (!matched) {
     showToast("Bunday o'quvchi topilmadi! Telefon raqam yoki ID'ni to'g'ri kiriting.", "error");
+    return;
+  }
+
+  if (matched.canLogin !== true) {
+    showToast("Akkauntga kirish uchun o'qituvchi ruxsati kerak! Admin ruxsat bermagan.", "error");
     return;
   }
 

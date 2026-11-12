@@ -908,8 +908,11 @@ function filterPointsStudents() {
               </span>
             </div>
           </div>
-          <div style="display:flex; align-items:center; gap:8px;" onclick="event.stopPropagation()">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;" onclick="event.stopPropagation()">
             <span style="font-weight: 800; color: #4f46e5; white-space: nowrap;">⭐ ${s.xp} XP</span>
+            <button class="btn-sm-action" onclick="toggleStudentLoginPermission(${s.id})" style="background:${s.canLogin ? '#dcfce7' : '#fee2e2'}; color:${s.canLogin ? '#166534' : '#991b1b'}; border:none;">
+              ${s.canLogin ? '🔓 Ruxsat bor' : '🔒 Ruxsat yo\'q'}
+            </button>
             <button class="btn-sm-action" onclick="openEditModal(${s.id})">Tahrirlash</button>
           </div>
         </div>
@@ -1107,7 +1110,21 @@ function openEditModal(id) {
   }
   document.getElementById('editStudentXp').value = s.xp;
   document.getElementById('editStudentPin').value = s.pin || "1234";
+  const canLoginEl = document.getElementById('editStudentCanLogin');
+  if (canLoginEl) canLoginEl.checked = s.canLogin === true;
   document.getElementById('editStudentModal').classList.add('active');
+}
+
+function toggleStudentLoginPermission(id) {
+  const s = appState.students.find(st => st.id === id);
+  if (!s) return;
+  s.canLogin = !(s.canLogin === true);
+  saveAdminState();
+  renderPoints();
+  showToast(
+    s.canLogin ? `🔓 ${s.name} ga akkauntga kirish ruxsati berildi.` : `🔒 ${s.name} ning akkauntiga kirish yopildi.`,
+    s.canLogin ? "success" : "warning"
+  );
 }
 
 function resetStudentPinToDefault() {
@@ -1135,6 +1152,8 @@ function submitEditStudent() {
   if (room) s.room = room;
   s.xp = xp;
   s.pin = pin;
+  const canLoginEl = document.getElementById('editStudentCanLogin');
+  if (canLoginEl) s.canLogin = canLoginEl.checked === true;
 
   saveAdminState();
   document.getElementById('editStudentModal').classList.remove('active');
