@@ -99,7 +99,7 @@ function loadAdminState() {
           pin: s.pin || "1234"
         }));
       }
-      appState.shopItems = (appState.shopItems && appState.shopItems.length > 0) ? appState.shopItems : DEFAULT_SHOP;
+      appState.shopItems = Array.isArray(appState.shopItems) ? appState.shopItems : DEFAULT_SHOP;
       appState.shopOrders = appState.shopOrders || [];
       appState.scheduleNotice = appState.scheduleNotice || {
         title: "Darslar boshlanishi haqida rasmiy e'lon",
@@ -1387,7 +1387,16 @@ function initAdminCloudSync() {
     onData: (cloudData) => {
       if (cloudData && cloudData.students && cloudData.students.length > 0) {
         console.log("☁️ [Admin] Bulutdan yangi ma'lumotlar qabul qilindi.");
-        appState = { ...appState, ...cloudData };
+        appState = {
+          ...appState,
+          ...cloudData,
+          shopItems: Array.isArray(cloudData.shopItems) ? cloudData.shopItems : [],
+          shopOrders: Array.isArray(cloudData.shopOrders) ? cloudData.shopOrders : [],
+          leads: Array.isArray(cloudData.leads) ? cloudData.leads : [],
+          scheduleAnnouncements: Array.isArray(cloudData.scheduleAnnouncements) ? cloudData.scheduleAnnouncements : [],
+          homeworkSubmissions: Array.isArray(cloudData.homeworkSubmissions) ? cloudData.homeworkSubmissions : [],
+          customGroups: Array.isArray(cloudData.customGroups) ? cloudData.customGroups : []
+        };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
         if (isAdminAuth) {
           renderAdminPortal();
@@ -1457,7 +1466,16 @@ function submitFirebaseConfigForm(e) {
   CloudDB.init({
     onData: (cloudData) => {
       if (cloudData && cloudData.students) {
-        appState = { ...appState, ...cloudData };
+        appState = {
+          ...appState,
+          ...cloudData,
+          shopItems: Array.isArray(cloudData.shopItems) ? cloudData.shopItems : [],
+          shopOrders: Array.isArray(cloudData.shopOrders) ? cloudData.shopOrders : [],
+          leads: Array.isArray(cloudData.leads) ? cloudData.leads : [],
+          scheduleAnnouncements: Array.isArray(cloudData.scheduleAnnouncements) ? cloudData.scheduleAnnouncements : [],
+          homeworkSubmissions: Array.isArray(cloudData.homeworkSubmissions) ? cloudData.homeworkSubmissions : [],
+          customGroups: Array.isArray(cloudData.customGroups) ? cloudData.customGroups : []
+        };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
         renderAdminPortal();
       }

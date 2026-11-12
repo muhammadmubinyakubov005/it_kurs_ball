@@ -239,7 +239,7 @@ function loadState() {
       } else {
         appState.students = DEFAULT_STUDENTS;
       }
-      appState.shopItems = parsed.shopItems || DEFAULT_SHOP;
+      appState.shopItems = Array.isArray(parsed.shopItems) ? parsed.shopItems : DEFAULT_SHOP;
       appState.shopOrders = parsed.shopOrders || [];
       appState.scheduleNotice = parsed.scheduleNotice || {
         title: "Darslar boshlanishi haqida rasmiy e'lon",
@@ -348,7 +348,16 @@ function initStudentCloudSync() {
     onData: (cloudData) => {
       if (cloudData && cloudData.students && cloudData.students.length > 0) {
         console.log("☁️ [Student] Bulutdan yangi ma'lumotlar sinxronizatsiya qilindi.");
-        appState = { ...appState, ...cloudData };
+        appState = {
+          ...appState,
+          ...cloudData,
+          shopItems: Array.isArray(cloudData.shopItems) ? cloudData.shopItems : [],
+          shopOrders: Array.isArray(cloudData.shopOrders) ? cloudData.shopOrders : [],
+          leads: Array.isArray(cloudData.leads) ? cloudData.leads : [],
+          scheduleAnnouncements: Array.isArray(cloudData.scheduleAnnouncements) ? cloudData.scheduleAnnouncements : [],
+          homeworkSubmissions: Array.isArray(cloudData.homeworkSubmissions) ? cloudData.homeworkSubmissions : [],
+          customGroups: Array.isArray(cloudData.customGroups) ? cloudData.customGroups : []
+        };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
 
         // Agar o'quvchi kabinetida bo'lsa, balli va ma'lumotlarini jonli yangilaymiz
