@@ -133,7 +133,7 @@ const DEFAULT_COURSES = [
   {
     id: "ai-full",
     title: "Kompyuter (0 dan) + Sun'iy Intellekt (AI)",
-    icon: "🤖",
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/><circle cx="12" cy="12" r="2.2" fill="#06b6d4" stroke="none"/></svg>`,
     level: "To'liq dastur",
     price: "2 oylik kurs",
     duration: "Haftada 3 kun • 2 soat",
@@ -143,7 +143,7 @@ const DEFAULT_COURSES = [
   {
     id: "comp-fnd",
     title: "1-Bosqich: Kompyuter Savodxonligi",
-    icon: "💻",
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/><path d="M8 9l2 2-2 2M12 13h4"/></svg>`,
     level: "1-oy",
     price: "Asosiy poydevor",
     duration: "1 oy • Amaliyot",
@@ -153,7 +153,7 @@ const DEFAULT_COURSES = [
   {
     id: "ai-prompt",
     title: "2-Bosqich: Sun'iy Intellekt (AI) & Prompt",
-    icon: "⚡",
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="rgba(124,58,237,0.14)"/></svg>`,
     level: "2-oy",
     price: "Zamonaviy kasb",
     duration: "1 oy • Loyihalar",
