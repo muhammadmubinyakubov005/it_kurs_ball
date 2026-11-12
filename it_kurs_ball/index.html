@@ -54,15 +54,15 @@
          ======================================================== -->
     <main id="viewGuestLanding" class="view-section">
       <!-- Hero Section -->
-      <section class="landing-hero" style="border-radius: 0 0 20px 20px;">
-        <div style="display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); padding:4px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; margin-bottom:12px;">
-          📍 Faqat Qo'qon shahar — Noib ko'prigi MFY
+      <section class="landing-hero" style="border-radius: 0 0 24px 24px;">
+        <div class="hero-pill-badge">
+          📍 Qo'qon • Noib ko'prigi MFY • Qabul ochiq
         </div>
-        <h2 class="hero-title-main" data-i18n="heroTitle" style="font-size: 1.85rem; max-width: 800px; margin: 0 auto 14px;">
-          Kompyuter Savodxonligi (0 dan) va Sun'iy Intellekt (AI) Kurslari
+        <h2 class="hero-title-main" data-i18n="heroTitle" style="max-width: 780px; margin: 0 auto 14px;">
+          0 dan Kompyuter va Sun'iy Intellekt (AI) Kursi
         </h2>
-        <p class="hero-subtitle-main" data-i18n="heroSubtitle" style="font-size: 0.95rem; margin-bottom: 24px;">
-          Bolalarga kompyuterni 0 dan o'rgatish, zamonaviy Sun'iy Intellekt (AI, ChatGPT) bilan ishlash va Prompt Engineering bo'yicha amaliy mashg'ulotlar. Qo'qondagi Noib ko'prigi MFY filialida!
+        <p class="hero-subtitle-main" data-i18n="heroSubtitle" style="margin-bottom: 24px;">
+          Farzandingiz 2 oyda kompyuter, ChatGPT va zamonaviy AI vositalarida mustaqil ishlashni o'rganadi. Birinchi sinov darsi — mutlaqo bepul!
         </p>
 
         <div class="hero-cta-wrap">
@@ -70,8 +70,23 @@
             <span data-i18n="btnRegisterTrial">🎯 Bepul sinov darsiga yozilish</span>
           </button>
           <button class="btn-hero-secondary" onclick="scrollToCourses()">
-            <span>Yo'nalish bilan tanishish 🤖</span>
+            <span>⚡ Kurs dasturini ko'rish</span>
           </button>
+        </div>
+
+        <div class="hero-metrics-grid">
+          <div class="metric-item-box">
+            <div class="metric-val">2 oy</div>
+            <div class="metric-lbl">Amaliy dastur</div>
+          </div>
+          <div class="metric-item-box">
+            <div class="metric-val">1-dars</div>
+            <div class="metric-lbl">Bepul sinov</div>
+          </div>
+          <div class="metric-item-box">
+            <div class="metric-val">100%</div>
+            <div class="metric-lbl">Alohida kompyuter</div>
+          </div>
         </div>
       </section>
 
@@ -80,25 +95,25 @@
         <div id="featuresSection" class="landing-features-grid" style="margin-top: 10px;">
           <div class="feat-card">
             <div class="feat-icon-bubble" style="background:#e0e7ff; color:#4338ca;">🤖</div>
-            <h4 class="feat-title">Sun'iy Intellekt & Prompt Engineering</h4>
-            <p class="feat-desc">Bolalarga AI (Sun'iy intellekt) qanday ishlashi, ChatGPT va neyrotarmoqlarga to'g'ri topshiriq (prompt) berish san'atini o'rgatamiz.</p>
+            <h4 class="feat-title">AI & Prompt Engineering</h4>
+            <p class="feat-desc">ChatGPT va neyrotarmoqlarga to'g'ri buyruq berib, matn, rasm va loyihalar yaratish.</p>
           </div>
           <div class="feat-card">
             <div class="feat-icon-bubble" style="background:#ecfdf5; color:#047857;">💻</div>
-            <h4 class="feat-title">Kompyuterni 0 dan O'rganish</h4>
-            <p class="feat-desc">Kompyuterdan to'g'ri foydalanish, tezkor matn terish, dasturlar, fayllar bilan ishlash va internet xavfsizligi.</p>
+            <h4 class="feat-title">Kompyuter 0 dan</h4>
+            <p class="feat-desc">Tezkor matn terish, Windows, dasturlar va internetda xavfsiz ishlash ko'nikmalari.</p>
           </div>
           <div class="feat-card">
-            <div class="feat-icon-bubble" style="background:#fef3c7; color:#b45309;">📍</div>
-            <h4 class="feat-title">Qo'qon — Noib Ko'prigi MFY</h4>
-            <p class="feat-desc">Har bir bolaga alohida zamonaviy kompyuter, shinam o'quv xonalari va tajribali ustozlar ko'magi.</p>
+            <div class="feat-icon-bubble" style="background:#fef3c7; color:#b45309;">🏆</div>
+            <h4 class="feat-title">Ball va Sovg'alar Tizimi</h4>
+            <p class="feat-desc">Har darsda XP ball to'plab, guruhda bellashish va do'kondan sovg'alar yutib olish!</p>
           </div>
         </div>
 
         <!-- Kurslar Ro'yxati -->
         <div style="margin: 30px 0 10px;">
-          <h3 style="font-size: 1.4rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">Asosiy Ta'lim Yo'nalishi</h3>
-          <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 16px;">Bizda yagona va chuqurlashtirilgan amaliy dastur asosida ta'lim beriladi</p>
+          <h3 style="font-size: 1.4rem; font-weight: 900; color: #0f172a; margin-bottom: 4px;">Kurs Dasturi (2 Bosqich)</h3>
+          <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 16px;">Qisqa vaqtda real natija beradigan amaliy mashg'ulotlar</p>
           <div class="courses-catalog-grid" id="guestCoursesGrid">
             <!-- JS orqali to'ldiriladi -->
           </div>
@@ -106,12 +121,12 @@
 
         <!-- Ro'yxatdan O'tish Formasi (Bosh sahifaning o'zida) -->
         <section id="registerSection" class="landing-register-section">
-          <div class="clean-badge">Qo'qon filiali • Qabul ochiq</div>
-          <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
-            Bepul Sinov Darsiga Ro'yxatdan O'tish
+          <div class="clean-badge">🔥 Joylar cheklangan • Qo'qon filiali</div>
+          <h3 style="font-size: 1.4rem; font-weight: 900; color: #0f172a; margin-bottom: 6px;">
+            1 Daqiqada Bepul Sinov Darsiga Yoziling!
           </h3>
-          <p style="font-size: 0.86rem; color: #64748b; margin-bottom: 20px;">
-            Ma'lumotlaringizni qoldiring, administratorimiz siz bilan bog'lanib, o'quvchi uchun qulay dars vaqtini belgilaydi.
+          <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 20px;">
+            Ism va telefon raqamingizni qoldiring — tezda bog'lanib, qulay dars vaqtini belgilaymiz.
           </p>
 
           <form id="guestRegisterForm" onsubmit="submitGuestRegistration(event)" style="max-width: 600px;">
@@ -152,8 +167,8 @@
               <small style="color: #64748b; font-size: 0.78rem; margin-top: 4px; display: block;">📍 Joylashuv: Farg'ona viloyati, Qo'qon shahar, Noib ko'prigi MFY.</small>
             </div>
 
-            <button type="submit" class="btn-primary" style="margin-top: 10px; width: 100%; padding: 12px;">
-              Arizani Yuborish
+            <button type="submit" class="btn-hero-lead" style="margin-top: 10px; width: 100%; justify-content: center; padding: 14px;">
+              🎯 Bepul Darsga Yozilish
             </button>
           </form>
         </section>

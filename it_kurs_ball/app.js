@@ -47,9 +47,9 @@ const I18N = {
     navRegister: "Ro'yxatdan o'tish",
     navLogin: "👨‍🎓 O'quvchi Kabineti",
     navLogout: "🚪 Chiqish",
-    heroTitle: "Kompyuter Savodxonligi (0 dan) va Sun'iy Intellekt (AI) Kurslari",
-    heroSubtitle: "Bolalarga kompyuterni 0 dan o'rgatish, zamonaviy Sun'iy Intellekt (AI, ChatGPT) bilan ishlash va Prompt Engineering bo'yicha amaliy mashg'ulotlar. Qo'qondagi Noib ko'prigi MFY filialida!",
-    btnRegisterTrial: "Bepul sinov darsiga yozilish",
+    heroTitle: "0 dan Kompyuter va Sun'iy Intellekt (AI) Kursi",
+    heroSubtitle: "Farzandingiz 2 oyda kompyuter, ChatGPT va zamonaviy AI vositalarida mustaqil ishlashni o'rganadi. Birinchi sinov darsi — mutlaqo bepul!",
+    btnRegisterTrial: "🎯 Bepul sinov darsiga yozilish",
     tabSchedule: "📅 Dars Jadvali",
     tabVideos: "🎥 Video Darslar & Arxiv",
     tabHomework: "📝 Uyga Vazifalar",
@@ -132,33 +132,33 @@ const DEFAULT_STUDENTS = [
 const DEFAULT_COURSES = [
   {
     id: "ai-full",
-    title: "Kompyuter Savodxonligi (0 dan) & Sun'iy Intellekt (AI) va Prompt Engineering",
+    title: "Kompyuter (0 dan) + Sun'iy Intellekt (AI)",
     icon: "🤖",
-    level: "0 dan boshlab (Barcha yoshdagi bolalar uchun)",
-    price: "Amaliy ta'lim kursi",
-    duration: "Amaliy kurs",
-    desc: "Bolalarga kompyuterdan to'g'ri foydalanishni 0 dan o'rgatish, zamonaviy Sun'iy Intellekt (AI) dunyosi, ChatGPT va AI vositalari bilan ishlash hamda Prompt Engineering (sun'iy intellektga to'g'ri so'rov berish san'ati) bo'yicha amaliy darslar.",
-    tags: ["Kompyuter 0 dan", "Sun'iy Intellekt", "Prompt Engineering", "ChatGPT & AI"]
+    level: "To'liq dastur",
+    price: "2 oylik kurs",
+    duration: "Haftada 3 kun • 2 soat",
+    desc: "Kompyuterni noldan o'rganish, ChatGPT va AI vositalaridan foydalanish hamda real loyihalar yaratish.",
+    tags: ["Kompyuter 0 dan", "ChatGPT & AI", "Prompting"]
   },
   {
     id: "comp-fnd",
-    title: "1-Bosqich: Kompyuterni 0 dan O'rganish (Savodxonlik)",
+    title: "1-Bosqich: Kompyuter Savodxonligi",
     icon: "💻",
-    level: "Boshlang'ich",
+    level: "1-oy",
     price: "Asosiy poydevor",
-    duration: "1-oy",
-    desc: "Kompyuterni yoqish, Windows tizimi, klaviaturada tez yozish, dasturlar, tizim fayllari bilan ishlash va internet xavfsizligi qoidalari.",
-    tags: ["Kompyuter 0 dan", "Windows", "Internet xavfsizligi"]
+    duration: "1 oy • Amaliyot",
+    desc: "Windows tizimi, tezkor matn terish, fayllar, ofis dasturlari va xavfsiz internet.",
+    tags: ["Windows", "Tezkor yozish", "Xavfsizlik"]
   },
   {
     id: "ai-prompt",
-    title: "2-Bosqich: Sun'iy Intellekt (AI) & Prompt Engineering",
+    title: "2-Bosqich: Sun'iy Intellekt (AI) & Prompt",
     icon: "⚡",
-    level: "Chuqurlashtirilgan",
-    price: "AI amaliyoti",
-    duration: "2-oy",
-    desc: "Neyrotarmoqlar va AI vositalari qanday ishlashi, sun'iy intellektga aniq va samarali buyruq (prompt) berish, matn, rasm va ijodiy ishlarni AI orqali yaratish.",
-    tags: ["Sun'iy Intellekt", "Prompt Engineering", "ChatGPT"]
+    level: "2-oy",
+    price: "Zamonaviy kasb",
+    duration: "1 oy • Loyihalar",
+    desc: "Neyrotarmoqlarga to'g'ri buyruq berish, AI orqali matn, rasm va ijodiy ishlar yaratish.",
+    tags: ["Sun'iy Intellekt", "Prompting", "Loyihalar"]
   }
 ];
 
@@ -492,19 +492,20 @@ function renderGuestLanding() {
 
   container.innerHTML = DEFAULT_COURSES.map(c => `
     <div class="course-card-box">
-      <div style="font-size: 1.8rem; margin-bottom: 8px;">${c.icon}</div>
-      <h3 style="font-size: 1.12rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">${c.title}</h3>
-      <p style="font-size: 0.85rem; color: #64748b; line-height: 1.5; margin-bottom: 14px;">${c.desc}</p>
-      <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px;">
+      <span class="course-badge-level">${c.level}</span>
+      <div class="course-icon-tag">${c.icon}</div>
+      <h3 class="course-name-title">${c.title}</h3>
+      <p class="course-desc-p">${c.desc}</p>
+      <div class="course-tags-list">
         ${c.tags.map(t => `<span class="course-tag-pill">#${t}</span>`).join('')}
       </div>
       <div class="course-footer-row">
         <div>
-          <div style="font-size: 1rem; font-weight: 900; color: #0f172a;">${c.price}</div>
-          <div style="font-size: 0.74rem; color: #64748b;">Davomiyligi: ${c.duration}</div>
+          <div style="font-size: 0.96rem; font-weight: 900; color: #0f172a;">${c.price}</div>
+          <div style="font-size: 0.74rem; color: #64748b;">${c.duration}</div>
         </div>
         <button class="btn-enroll-course" onclick="scrollToRegister('${c.title}')">
-          Tanlash
+          🚀 Yozilish
         </button>
       </div>
     </div>
