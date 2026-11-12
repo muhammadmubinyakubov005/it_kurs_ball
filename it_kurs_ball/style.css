@@ -3273,8 +3273,44 @@ body {
 }
 
 @media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
   .top-navbar {
-    padding: 10px 14px;
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .student-portal-header {
+    padding: 12px 14px !important;
+    gap: 10px !important;
+  }
+  .student-portal-actions {
+    width: 100%;
+    gap: 6px !important;
+    justify-content: flex-start;
+  }
+  .student-portal-actions .btn-sm-action {
+    font-size: 0.78rem !important;
+    padding: 6px 10px !important;
+  }
+  #stHeaderXp {
+    font-size: 0.82rem !important;
+    padding: 5px 10px !important;
+    margin-left: auto;
+  }
+  .sub-tabs-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 8px 12px !important;
+    gap: 6px !important;
+  }
+  .sub-tabs-bar::-webkit-scrollbar {
+    display: none;
+  }
+  #stActiveTasksBox {
+    grid-template-columns: 1fr !important;
   }
   .brand-info {
     gap: 8px;
@@ -3412,6 +3448,14 @@ body {
 }
 
 @media (max-width: 480px) {
+  .cloud-status-badge {
+    font-size: 0.7rem !important;
+    padding: 4px 8px !important;
+    max-width: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .crm-stats-summary {
     grid-template-columns: 1fr;
   }
