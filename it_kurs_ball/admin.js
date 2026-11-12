@@ -254,12 +254,20 @@ function checkAdminAuth() {
   }
 }
 
-function submitAdminLogin(e) {
+const ADMIN_PASS_SHA256 = '3ca6970869fa261fc682c67ac6177ad3cbb7854dab2738c93583c74cbeeff0b5';
+
+async function sha256Hex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function submitAdminLogin(e) {
   if (e) e.preventDefault();
   const user = document.getElementById('adminUsername').value.trim();
   const pass = document.getElementById('adminPassword').value.trim();
+  const passHash = (window.crypto && window.crypto.subtle) ? await sha256Hex(pass) : '';
 
-  if ((user === 'admin' && pass === 'admin123') || pass === '7777') {
+  if (user === 'admin' && passHash === ADMIN_PASS_SHA256) {
     isAdminAuth = true;
     sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
     checkAdminAuth();

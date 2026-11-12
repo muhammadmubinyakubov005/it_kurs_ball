@@ -4,15 +4,16 @@ Ushbu bot Telegramda Mini-Appni (Web App) ochish tugmasini beradi.
 """
 
 import json
+import os
 import time
 import urllib.request
 import urllib.parse
 
-# 1. Botingiz Tokyeni:
-BOT_TOKEN = "9235097333:AAG8zFNtWb6hf7Hdfiimvh_pA9NrtXQcaFU"
+# 1. Botingiz Tokeni (muhit o'zgaruvchisidan olinadi):
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 
-# 2. Vercel yoki Netlify'ga yuklangan Mini-App havolasi (HTTPS bo'lishi shart):
-WEBAPP_URL = "https://senuchun-rho.vercel.app"  # O'zingizning havolangizni qo'ying
+# 2. Vercel'ga yuklangan Mini-App havolasi (HTTPS bo'lishi shart):
+WEBAPP_URL = "https://itkursball.vercel.app"
 
 BASE_URL = f"https://api.telegram.org/bot{BOT_TOKEN}"
 
