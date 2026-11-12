@@ -127,7 +127,6 @@ function loadAdminState() {
   }
 
   normalizeStudentIds();
-  syncOfficialStudentPoints();
   saveAdminState();
 
   // Markaziy bulutli baza bilan sinxronizatsiya

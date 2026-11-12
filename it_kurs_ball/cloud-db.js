@@ -8,13 +8,14 @@ const CLOUD_CONFIG_KEY = 'IT_PARK_FIREBASE_CONFIG';
 // Standart / Boshlang'ich konfiguratsiya
 // Foydalanuvchi Admin paneldan istalgan payt o'z Firebase kalitlarini qo'yishi mumkin
 const DEFAULT_FIREBASE_CONFIG = {
-  apiKey: "AIzaSyITParkAcademyLiveDemo2026Key",
-  authDomain: "it-park-academy-uz.firebaseapp.com",
-  databaseURL: "https://it-park-academy-uz-default-rtdb.firebaseio.com",
-  projectId: "it-park-academy-uz",
-  storageBucket: "it-park-academy-uz.appspot.com",
-  messagingSenderId: "1029384756",
-  appId: "1:1029384756:web:a1b2c3d4e5f6g7h8i9j0"
+  apiKey: "AIzaSyBDHieycFwN4XUfoe31wX6KSWBvw00ywAo",
+  authDomain: "it-kurs-ball.firebaseapp.com",
+  databaseURL: "https://it-kurs-ball-default-rtdb.firebaseio.com",
+  projectId: "it-kurs-ball",
+  storageBucket: "it-kurs-ball.firebasestorage.app",
+  messagingSenderId: "46592703770",
+  appId: "1:46592703770:web:da8762f42e725675a9c0a3",
+  measurementId: "G-VGD5R4B5HY"
 };
 
 const CloudDB = {

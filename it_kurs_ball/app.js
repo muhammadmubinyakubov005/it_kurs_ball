@@ -254,7 +254,6 @@ function loadState() {
       appState.homeworkSubmissions = parsed.homeworkSubmissions || DEFAULT_SUBMISSIONS;
       appState.customGroups = parsed.customGroups || [];
       normalizeStudentIds();
-      syncOfficialStudentPoints();
       saveState();
     } catch (e) {
       initDefaults();
