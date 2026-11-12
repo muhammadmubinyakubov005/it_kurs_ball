@@ -163,10 +163,10 @@ const DEFAULT_COURSES = [
 ];
 
 const DEFAULT_VIDEOS = [
-  { id: 1, title: "1-Dars: HTML5 Semantikasi va Hujjat Strukturasi", duration: "48 daqiqa", teacher: "Sanjar Rustamov", url: "https://www.youtube.com/embed/qz0aGYrrlhU", summary: "Web sahifa teglari, semantik tuzilma, qidiruv tizimlari (SEO) uchun optimizatsiya.", notes: "Semantik teglardan foydalanish brauzerlar va qidiruv tizimlari uchun standart hisoblanadi." },
-  { id: 2, title: "2-Dars: CSS Flexbox va Grid Asoslari", duration: "55 daqiqa", teacher: "Sanjar Rustamov", url: "https://www.youtube.com/embed/JJSoEo8JSnc", summary: "Moslashuvchan layoutlar qurish, elementlarni tekislash va ekran o'lchamlari bo'yicha moslashtirish.", notes: "Flexbox bir o'lchamli qatorlar, Grid esa ikki o'lchamli joylashuvlar uchun qulay." },
-  { id: 3, title: "3-Dars: JavaScript DOM va Hodisalar bilan Ishlash", duration: "1 soat 10 min", teacher: "Sanjar Rustamov", url: "https://www.youtube.com/embed/hdI2bqOjy3c", summary: "querySelector, event listeners, dinamik elementlar yaratish va forma ma'lumotlarini o'qish.", notes: "Hodisalar foydalanuvchi harakatlarini interaktiv qayta ishlash imkonini beradi." },
-  { id: 4, title: "4-Dars: Python Funksiyalar va Ma'lumotlar Tuzilmalari", duration: "1 soat 05 min", teacher: "Rustam Qodirov", url: "https://www.youtube.com/embed/kqtD5dpn9C8", summary: "Funksiyalar yaratish, argumentlar, return qiymati, ro'yxat va lug'atlar bilan ishlash.", notes: "Funksiyalar kodni qisqartirish va qayta ishlatish uchun asosiy vositadir." }
+  { id: 1, title: "1-Dars: HTML5 Semantikasi va Hujjat Strukturasi", duration: "48 daqiqa", teacher: "Muhammadmubin Yakubov", url: "https://www.youtube.com/embed/qz0aGYrrlhU", summary: "Web sahifa teglari, semantik tuzilma, qidiruv tizimlari (SEO) uchun optimizatsiya.", notes: "Semantik teglardan foydalanish brauzerlar va qidiruv tizimlari uchun standart hisoblanadi." },
+  { id: 2, title: "2-Dars: CSS Flexbox va Grid Asoslari", duration: "55 daqiqa", teacher: "Muhammadmubin Yakubov", url: "https://www.youtube.com/embed/JJSoEo8JSnc", summary: "Moslashuvchan layoutlar qurish, elementlarni tekislash va ekran o'lchamlari bo'yicha moslashtirish.", notes: "Flexbox bir o'lchamli qatorlar, Grid esa ikki o'lchamli joylashuvlar uchun qulay." },
+  { id: 3, title: "3-Dars: JavaScript DOM va Hodisalar bilan Ishlash", duration: "1 soat 10 min", teacher: "Muhammadmubin Yakubov", url: "https://www.youtube.com/embed/hdI2bqOjy3c", summary: "querySelector, event listeners, dinamik elementlar yaratish va forma ma'lumotlarini o'qish.", notes: "Hodisalar foydalanuvchi harakatlarini interaktiv qayta ishlash imkonini beradi." },
+  { id: 4, title: "4-Dars: Python Funksiyalar va Ma'lumotlar Tuzilmalari", duration: "1 soat 05 min", teacher: "Muhammadmubin Yakubov", url: "https://www.youtube.com/embed/kqtD5dpn9C8", summary: "Funksiyalar yaratish, argumentlar, return qiymati, ro'yxat va lug'atlar bilan ishlash.", notes: "Funksiyalar kodni qisqartirish va qayta ishlatish uchun asosiy vositadir." }
 ];
 
 const DEFAULT_SUBMISSIONS = [
@@ -756,7 +756,7 @@ function renderSchedule(st) {
   const time = st.time || defaultTime;
   const defaultRoom = st.group && st.group.includes('1-Guruh') ? "302-xona (Turing Lab)" : "204-xona (Ada Lovelace)";
   const room = st.room || defaultRoom;
-  const teacher = st.group && st.group.includes('1-Guruh') ? "Sanjarbek Rustamov" : "Rustam Qodirov";
+  const teacher = st.teacher || "Muhammadmubin Yakubov";
 
   // Guruhga mos e'lonlarni saralash (faqat aytilgan guruhlarga ko'rinadi)
   const allAnnouncements = appState.scheduleAnnouncements || (appState.scheduleNotice ? [appState.scheduleNotice] : []);
