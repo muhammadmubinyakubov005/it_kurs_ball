@@ -108,8 +108,8 @@ function loadAdminState() {
         active: true
       };
       appState.scheduleAnnouncements = appState.scheduleAnnouncements || (appState.scheduleNotice ? [appState.scheduleNotice] : []);
-      appState.videoLessons = (appState.videoLessons && appState.videoLessons.length > 0) ? appState.videoLessons : DEFAULT_VIDEOS;
-      appState.homeworkTasks = (appState.homeworkTasks && appState.homeworkTasks.length > 0) ? appState.homeworkTasks : DEFAULT_TASKS;
+      appState.videoLessons = Array.isArray(appState.videoLessons) ? appState.videoLessons : DEFAULT_VIDEOS;
+      appState.homeworkTasks = Array.isArray(appState.homeworkTasks) ? appState.homeworkTasks : DEFAULT_TASKS;
     } catch (e) {
       console.error(e);
       appState.students = DEFAULT_STUDENTS;
@@ -1421,6 +1421,8 @@ function initAdminCloudSync() {
           shopOrders: Array.isArray(cloudData.shopOrders) ? cloudData.shopOrders : [],
           leads: Array.isArray(cloudData.leads) ? cloudData.leads : [],
           scheduleAnnouncements: Array.isArray(cloudData.scheduleAnnouncements) ? cloudData.scheduleAnnouncements : [],
+          videoLessons: Array.isArray(cloudData.videoLessons) ? cloudData.videoLessons : [],
+          homeworkTasks: Array.isArray(cloudData.homeworkTasks) ? cloudData.homeworkTasks : [],
           homeworkSubmissions: Array.isArray(cloudData.homeworkSubmissions) ? cloudData.homeworkSubmissions : [],
           customGroups: Array.isArray(cloudData.customGroups) ? cloudData.customGroups : []
         };
@@ -1500,6 +1502,8 @@ function submitFirebaseConfigForm(e) {
           shopOrders: Array.isArray(cloudData.shopOrders) ? cloudData.shopOrders : [],
           leads: Array.isArray(cloudData.leads) ? cloudData.leads : [],
           scheduleAnnouncements: Array.isArray(cloudData.scheduleAnnouncements) ? cloudData.scheduleAnnouncements : [],
+          videoLessons: Array.isArray(cloudData.videoLessons) ? cloudData.videoLessons : [],
+          homeworkTasks: Array.isArray(cloudData.homeworkTasks) ? cloudData.homeworkTasks : [],
           homeworkSubmissions: Array.isArray(cloudData.homeworkSubmissions) ? cloudData.homeworkSubmissions : [],
           customGroups: Array.isArray(cloudData.customGroups) ? cloudData.customGroups : []
         };

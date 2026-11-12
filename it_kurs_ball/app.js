@@ -249,8 +249,8 @@ function loadState() {
       };
       appState.scheduleAnnouncements = parsed.scheduleAnnouncements || (parsed.scheduleNotice ? [parsed.scheduleNotice] : []);
       appState.leads = parsed.leads || [];
-      appState.videoLessons = (parsed.videoLessons && parsed.videoLessons.length > 0) ? parsed.videoLessons : DEFAULT_VIDEOS;
-      appState.homeworkTasks = (parsed.homeworkTasks && parsed.homeworkTasks.length > 0) ? parsed.homeworkTasks : DEFAULT_TASKS;
+      appState.videoLessons = Array.isArray(parsed.videoLessons) ? parsed.videoLessons : DEFAULT_VIDEOS;
+      appState.homeworkTasks = Array.isArray(parsed.homeworkTasks) ? parsed.homeworkTasks : DEFAULT_TASKS;
       appState.homeworkSubmissions = parsed.homeworkSubmissions || DEFAULT_SUBMISSIONS;
       appState.customGroups = parsed.customGroups || [];
       normalizeStudentIds();
@@ -355,6 +355,8 @@ function initStudentCloudSync() {
           shopOrders: Array.isArray(cloudData.shopOrders) ? cloudData.shopOrders : [],
           leads: Array.isArray(cloudData.leads) ? cloudData.leads : [],
           scheduleAnnouncements: Array.isArray(cloudData.scheduleAnnouncements) ? cloudData.scheduleAnnouncements : [],
+          videoLessons: Array.isArray(cloudData.videoLessons) ? cloudData.videoLessons : [],
+          homeworkTasks: Array.isArray(cloudData.homeworkTasks) ? cloudData.homeworkTasks : [],
           homeworkSubmissions: Array.isArray(cloudData.homeworkSubmissions) ? cloudData.homeworkSubmissions : [],
           customGroups: Array.isArray(cloudData.customGroups) ? cloudData.customGroups : []
         };
